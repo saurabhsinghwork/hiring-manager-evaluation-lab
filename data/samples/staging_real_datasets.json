@@ -1,0 +1,722 @@
+[
+  {
+    "dataset_id": 1,
+    "candidate_name": "Yanxing Wang",
+    "target_job": "Software Engineer Intern",
+    "company": "TikTok USDS Joint Venture",
+    "candidate_profile": {
+      "candidate_name": "Yanxing Wang",
+      "current_title": "Leader at TikTok USDS",
+      "location": "San Francisco Bay Area",
+      "summary": "Leader at TikTok USDS",
+      "experiences": [
+        {
+          "title": "Leader",
+          "company": "TikTok USDS Joint Venture",
+          "duration": "2 years",
+          "description": "TikTok platform/community integrity and the Trust&Safety Algorithm team."
+        },
+        {
+          "title": "Senior Engineering Manager",
+          "company": "Snap Inc.",
+          "duration": "2 years",
+          "description": "Snap Monetization, Ads Delivery"
+        },
+        {
+          "title": "Senior Engineering Manager",
+          "company": "TikTok",
+          "duration": "2 years",
+          "description": "\u2022 Department leader overseeing ~50 engineers across a few teams in the TikTok Ads Platform business line, operating in the U.S. and China."
+        },
+        {
+          "title": "Co-Founder/CTO",
+          "company": "Stealth Startup",
+          "duration": "2 years",
+          "description": ""
+        }
+      ],
+      "skills": [
+        "Compiler",
+        "Node.js",
+        "CSS",
+        "Algorithms",
+        "Operating Systems",
+        "Lua",
+        "Software Engineering",
+        "C"
+      ]
+    },
+    "job_description": {
+      "job_title": "Software Engineer Intern",
+      "department": "Engineering & Technology",
+      "level": "Not Available",
+      "location": "San Jose, CA",
+      "summary": "TikTok USDS is seeking a Summer 2027 software engineering intern to build and operate big data frameworks and distributed systems for its e\u2011commerce platform. The intern will collaborate across teams, drive technical innovation, and improve system efficiency and scalability.",
+      "key_responsibilities": [
+        "Build and operate innovative big data computing frameworks and storage systems to empower large-scale platform services.",
+        "Design and optimize high-concurrency distributed systems to ensure stability during peak global traffic.",
+        "Collaborate cross-functionally with internal and external stakeholders to drive large-scale engineering initiatives.",
+        "Drive technical innovation by integrating new ideas and emerging technologies into the core platform.",
+        "Enhance system efficiency and scalability to support the rapid growth of the global e-commerce ecosystem."
+      ],
+      "requirements": [
+        "Currently pursuing an undergraduate or graduate degree in Computer Science, Computer Engineering, Software Engineering, or a related technical discipline.",
+        "Able to commit to a 12-week internship during Summer 2027.",
+        "Experience in programming, included but not limited to the following programming languages: C, C++, Java or Golang;",
+        "Effective communication skills and a sense of ownership and drive.",
+        "Experience in AI coding is a plus."
+      ]
+    },
+    "company_context": {
+      "company_name": "TikTok USDS Joint Venture",
+      "industry": "Entertainment Providers",
+      "company_size": "1,001-5,000 employees",
+      "website": "https://usdsjv.tiktok.com/",
+      "company_overview": "TikTok USDS Joint Venture provides specialized technology platforms and enterprise software services.",
+      "organizational_structure": "Engineering managers and functional directors oversee engineering requisitions and interview pipelines at TikTok USDS Joint Venture."
+    }
+  },
+  {
+    "dataset_id": 2,
+    "candidate_name": "Alex McLeod",
+    "target_job": "Software Engineer Intern",
+    "company": "Serval",
+    "candidate_profile": {
+      "candidate_name": "Alex McLeod",
+      "current_title": "Founder & CTO @ Serval | AI Agents for IT",
+      "location": "San Francisco Bay Area",
+      "summary": "At ",
+      "experiences": [
+        {
+          "title": "Founder",
+          "company": "Serval",
+          "duration": "2 years",
+          "description": ""
+        },
+        {
+          "title": "Director of Engineering, New Products",
+          "company": "Verkada",
+          "duration": "2 years",
+          "description": ""
+        },
+        {
+          "title": "Director of Engineering, Alarms",
+          "company": "Verkada",
+          "duration": "2 years",
+          "description": "Leading the software engineering team for Verkada's Alarms product category: verkada.com/alarms. In short, we build products which protect people and property from immediate harm."
+        },
+        {
+          "title": "Engineering Manager, Alarms",
+          "company": "Verkada",
+          "duration": "2 years",
+          "description": ""
+        }
+      ],
+      "skills": [
+        "Haskell",
+        "Cascading Style Sheets (CSS)",
+        "Backbone.js",
+        "Django",
+        "AngularJS",
+        "Computer Science",
+        "Linux",
+        "Java"
+      ]
+    },
+    "job_description": {
+      "job_title": "Software Engineer Intern",
+      "department": "Engineering & Technology",
+      "level": "Fresher",
+      "location": "San Francisco, CA",
+      "summary": "The Software Engineer Intern, Backend will work directly with the CTO and founding engineering team to build and extend core backend capabilities of Serval's AI-driven automation platform. The intern will contribute production code, design scalable systems, and help ship key product milestones in a fast\u2011moving startup environment.",
+      "key_responsibilities": [
+        "Work closely with our CTO and founding engineering team to build and extend backend product capabilities.",
+        "Contribute to backend services that power Serval\u2019s AI-driven automation workflows.",
+        "Learn how to design, implement, and test scalable systems in a production environment.",
+        "Help us move quickly toward key product milestones, including shipping and iterating on core platform features."
+      ],
+      "requirements": [
+        "Currently pursuing a degree in Computer Science, Engineering, or a related technical field with an expected graduation date between Dec 2026 - 2028",
+        "Strong fundamentals in computer science (data structures, algorithms, systems).",
+        "Familiarity with at least one backend programming language (Go, Java, Python, or similar).",
+        "Clear communication skills and the ability to learn quickly in a fast-moving environment.",
+        "Excitement about startups, ownership, and building products from the ground up."
+      ]
+    },
+    "company_context": {
+      "company_name": "Serval",
+      "industry": "Software Development",
+      "company_size": "51-200 employees",
+      "website": "https://www.serval.com",
+      "company_overview": "Serval is a unified help desk, access management, and automation platform with a built-in AI agent workforce. Deploy AI agents to automate the most challenging help desk requests, build enterprise-grade workflow automations, and surface actionable insights.",
+      "organizational_structure": "Engineering managers and functional directors oversee engineering requisitions and interview pipelines at Serval."
+    }
+  },
+  {
+    "dataset_id": 3,
+    "candidate_name": "Kallol Das",
+    "target_job": "AI Engineer",
+    "company": "EvenUp",
+    "candidate_profile": {
+      "candidate_name": "Kallol Das",
+      "current_title": "CTO at EvenUp",
+      "location": "San Francisco, California, United States",
+      "summary": "Maybe this makes me old fashioned but I only accept LinkedIn connections from people I have communicated with directly.",
+      "experiences": [
+        {
+          "title": "CTO",
+          "company": "EvenUp",
+          "duration": "2 years",
+          "description": ""
+        },
+        {
+          "title": "Head",
+          "company": "Blend",
+          "duration": "2 years",
+          "description": ""
+        },
+        {
+          "title": "CTO",
+          "company": "Invoice2go",
+          "duration": "2 years",
+          "description": ""
+        },
+        {
+          "title": "Vice President",
+          "company": "Path",
+          "duration": "2 years",
+          "description": ""
+        }
+      ],
+      "skills": []
+    },
+    "job_description": {
+      "job_title": "AI Engineer",
+      "department": "Engineering & Technology",
+      "level": "Not Available",
+      "location": "San Francisco, CA",
+      "summary": "EvenUp is seeking a backend engineer to design, build, and maintain the AI\u2011powered document generation platform. The role involves owning projects end\u2011to\u2011end, driving architecture, and collaborating with product, design, and applied AI teams to deliver scalable, reliable services.",
+      "key_responsibilities": [
+        "You\u2019ll own complex technical problems from design through production, working on document generation workflows where AI is a core part of the solution - not an afterthought.",
+        "You\u2019ll have the opportunity to influence architecture, shape technical direction, and partner closely with Product, Design, and Applied AI to deliver meaningful customer impact.",
+        "Design, build, and maintain backend services powering EvenUp\u2019s document generation platform.",
+        "Own projects from technical design through production launch and ongoing iteration.",
+        "Build scalable systems that leverage AI within document generation workflows."
+      ],
+      "requirements": [
+        "Strong software development experience, with hands\u2011on expertise in Python or languages such as Go, Java, Node.js, or C++.",
+        "Proven ability to design and ship scalable, production\u2011grade systems, including APIs and distributed systems.",
+        "Experience owning projects end\u2011to\u2011end in fast\u2011paced, high\u2011growth or startup environments.",
+        "Bonus: Experience with AI\u2011powered applications, legal tech, document generation systems or social impact\u2013driven products."
+      ]
+    },
+    "company_context": {
+      "company_name": "EvenUp",
+      "industry": "Technology, Information and Internet",
+      "company_size": "501-1,000 employees",
+      "website": "https://www.evenuplaw.com",
+      "company_overview": "EvenUp is the leading proactive AI platform for personal injury law, the first of its kind, built on the largest personal injury dataset. Trusted by 2,000+ firms, EvenUp helps legal teams run casework like clockwork\u2014drafting documents, automating workflows, and maximizing the outcome of every case from intake to resolution.",
+      "organizational_structure": "Engineering managers and functional directors oversee engineering requisitions and interview pipelines at EvenUp."
+    }
+  },
+  {
+    "dataset_id": 4,
+    "candidate_name": "Ryan Rauh",
+    "target_job": "Software Support Engineer",
+    "company": "GLG",
+    "candidate_profile": {
+      "candidate_name": "Ryan Rauh",
+      "current_title": "Software",
+      "location": "Austin, Texas, United States",
+      "summary": "Experienced Chief Executive Officer with a demonstrated history of working in the computer software industry. Skilled in Virtual Appliances, Agile Methodologies, jQuery, Productivity Software, and Ruby. Strong business development professional with a Bachelor of Arts (B.A.) focused in Computer and Information Sciences, General from Waldorf College.",
+      "experiences": [
+        {
+          "title": "Director",
+          "company": "GLG",
+          "duration": "2 years",
+          "description": "As Director"
+        },
+        {
+          "title": "Principal Software Engineer",
+          "company": "GLG",
+          "duration": "2 years",
+          "description": ""
+        },
+        {
+          "title": "Senior Software Engineer",
+          "company": "GLG",
+          "duration": "2 years",
+          "description": ""
+        },
+        {
+          "title": "CEO & Founder",
+          "company": "HuBoard, Inc.",
+          "duration": "2 years",
+          "description": "Building, growing and cultivating a bootstrapped company that aims to profitable and sustainable."
+        }
+      ],
+      "skills": [
+        "Productivity Software",
+        "Web Applications",
+        "CSS",
+        "VMware",
+        "Software Development",
+        "JavaScript",
+        "Linux",
+        "Puppet"
+      ]
+    },
+    "job_description": {
+      "job_title": "Software Support Engineer",
+      "department": "Engineering & Technology",
+      "level": "Not Available",
+      "location": "Austin, TX",
+      "summary": "The Software Support Engineer will ensure continuous operation and reliability of GLG's critical systems, working with engineering and helpdesk teams to triage, diagnose, and resolve issues. The role involves communicating resolutions to stakeholders and explaining technical solutions to non\u2011technical audiences.",
+      "key_responsibilities": [
+        "Help ensure the continuous operation and reliability of GLG's critical systems.",
+        "Interface with Engineering and Helpdesk to triage and resolve system issues.",
+        "Diagnose and resolve issues when identified.",
+        "Communicate resolutions to stakeholders and be able to explain technical solutions to non-technical people."
+      ],
+      "requirements": [
+        "A degree in computer science (or related engineering degree), or demonstrable equivalent technical proficiency is required.",
+        "A growth mindset, and an eagerness to learn new languages and technologies used across GLG including JavaScript, TypeScript, Python, and SQL.",
+        "Experience using Claude, Copilot, Opencode and other AI Toolsets.",
+        "A strong interest in problem solving and collaboration.",
+        "The ability to investigate and diagnose system problems."
+      ]
+    },
+    "company_context": {
+      "company_name": "GLG",
+      "industry": "Information Services",
+      "company_size": "1,001-5,000 employees",
+      "website": "https://glg.com",
+      "company_overview": "GLG is the world\u2019s leading platform for trusted human expertise, connecting decision makers to the precise intelligence they need to gain a strategic edge. Leveraging decades of experience and proprietary data, GLG\u2019s global teams recruit and engage hard-to-access experts across every industry \u2013 delivering fresh, authoritative insights, events, advisors, and board placements to the world\u2019s most rec",
+      "organizational_structure": "Engineering managers and functional directors oversee engineering requisitions and interview pipelines at GLG."
+    }
+  },
+  {
+    "dataset_id": 5,
+    "candidate_name": "Nathan Andrews",
+    "target_job": "Software Support Engineer",
+    "company": "GLG",
+    "candidate_profile": {
+      "candidate_name": "Nathan Andrews",
+      "current_title": "CTO at GLG",
+      "location": "Austin, Texas, United States",
+      "summary": "CTO at GLG",
+      "experiences": [
+        {
+          "title": "Chief Technology Officer",
+          "company": "GLG",
+          "duration": "2 years",
+          "description": ""
+        },
+        {
+          "title": "Senior Vice President",
+          "company": "GLG",
+          "duration": "2 years",
+          "description": "Led product strategy and management for GLG"
+        },
+        {
+          "title": "Vice President",
+          "company": "GLG",
+          "duration": "2 years",
+          "description": ""
+        },
+        {
+          "title": "Director",
+          "company": "GLG",
+          "duration": "2 years",
+          "description": ""
+        }
+      ],
+      "skills": []
+    },
+    "job_description": {
+      "job_title": "Software Support Engineer",
+      "department": "Engineering & Technology",
+      "level": "Not Available",
+      "location": "Austin, TX",
+      "summary": "The Software Support Engineer will ensure continuous operation and reliability of GLG's critical systems, working with engineering and helpdesk teams to triage, diagnose, and resolve issues. The role involves communicating resolutions to stakeholders and explaining technical solutions to non\u2011technical audiences.",
+      "key_responsibilities": [
+        "Help ensure the continuous operation and reliability of GLG's critical systems.",
+        "Interface with Engineering and Helpdesk to triage and resolve system issues.",
+        "Diagnose and resolve issues when identified.",
+        "Communicate resolutions to stakeholders and be able to explain technical solutions to non-technical people."
+      ],
+      "requirements": [
+        "A degree in computer science (or related engineering degree), or demonstrable equivalent technical proficiency is required.",
+        "A growth mindset, and an eagerness to learn new languages and technologies used across GLG including JavaScript, TypeScript, Python, and SQL.",
+        "Experience using Claude, Copilot, Opencode and other AI Toolsets.",
+        "A strong interest in problem solving and collaboration.",
+        "The ability to investigate and diagnose system problems."
+      ]
+    },
+    "company_context": {
+      "company_name": "GLG",
+      "industry": "Information Services",
+      "company_size": "1,001-5,000 employees",
+      "website": "https://glg.com",
+      "company_overview": "GLG is the world\u2019s leading platform for trusted human expertise, connecting decision makers to the precise intelligence they need to gain a strategic edge. Leveraging decades of experience and proprietary data, GLG\u2019s global teams recruit and engage hard-to-access experts across every industry \u2013 delivering fresh, authoritative insights, events, advisors, and board placements to the world\u2019s most rec",
+      "organizational_structure": "Engineering managers and functional directors oversee engineering requisitions and interview pipelines at GLG."
+    }
+  },
+  {
+    "dataset_id": 6,
+    "candidate_name": "Adam W. Lerman",
+    "target_job": "Cloud Software Engineer",
+    "company": "Red Drum",
+    "candidate_profile": {
+      "candidate_name": "Adam W. Lerman",
+      "current_title": "Chief Technology Officer at RedDrum",
+      "location": "Ellicott City, Maryland, United States",
+      "summary": "Software developer with experience in a wide variety of technologies. I enjoy making a difference to my users, and making it easier for them to get their jobs done.\u00a0\n\u00a0\nSpecialties: C#, Java, HTML, Javascript, WIndows, Linux, Mac OS",
+      "experiences": [],
+      "skills": [
+        "Infrastructure as code (IaC)",
+        ".NET",
+        "Eclipse",
+        "Software Engineering",
+        "Hibernate",
+        "Web Services",
+        "Grails",
+        "OS X"
+      ]
+    },
+    "job_description": {
+      "job_title": "Cloud Software Engineer",
+      "department": "Engineering & Technology",
+      "level": "Not Available",
+      "location": "Annapolis Junction, MD",
+      "summary": "Red Drum is seeking software and cloud software engineers to develop cutting\u2011edge data solutions that protect national freedoms and expand global intelligence capabilities. Candidates must have a relevant degree or equivalent experience, a current TS clearance with polygraph, and proficiency with a broad range of modern technologies.",
+      "key_responsibilities": [
+        "Design and maintain scalable infrastructure and core service components.",
+        "Collaborate with product and engineering managers on roadmap milestones.",
+        "Participate in architecture reviews and code quality initiatives."
+      ],
+      "requirements": [
+        "B.S. in Computer Science, Computer Engineering, or a related field. On most contracts, years of experience can be substituted for a degree.",
+        "Experience levels range from 0 \u2013 20+ years of experience.",
+        "A Current TS clearance plus Polygraph is required for all openings. No CCA\u2019s accepted.",
+        "Tech stack across our software and cloud software engineering openings include the latest technologies such as: Java, Maven, Python, C++, JavaScript, Angular, Kubernetes, Spring, Git, AWS, Azure, VMWare, React, OpenSource, Hadoop, Accumulo, MongoDB, and more."
+      ]
+    },
+    "company_context": {
+      "company_name": "Red Drum",
+      "industry": "Information Technology & Services",
+      "company_size": "11-50",
+      "website": "https://red-drum.com",
+      "company_overview": "At Red Drum we develop cutting-edge data solutions that protect our nation\u2019s freedoms and expand our global intelligence capabilities.  Our vision is to distinguish ourselves within the Intelligence Community and the Department of Defense as industry leaders in Full Stack Development, Cloud Computing, Data Warehousing, Data Analytics, Machine Learning, and Artificial Intelligence.  We understand t",
+      "organizational_structure": "Engineering managers and functional directors oversee engineering requisitions and interview pipelines at Red Drum."
+    }
+  },
+  {
+    "dataset_id": 7,
+    "candidate_name": "William Jenkins",
+    "target_job": "Embedded Software Engineer",
+    "company": "MSA Safety",
+    "candidate_profile": {
+      "candidate_name": "William Jenkins",
+      "current_title": "Engineering Productivity Lead | DevOps & Platform Engineering | CI/CD \u00b7 Developer Tooling \u00b7 Python \u00b7 Ansible \u00b7 IaC \u00b7 Kubernetes \u00b7 Build Systems | Team Leadership & Org-Wide Impact | Open to Engineering Manager Roles",
+      "location": "Greater Pittsburgh Region",
+      "summary": "I'm an Engineering Productivity Lead who sits at the intersection of deep technical ownership and people-first leadership \u2014 and I've spent the last few years building both from the ground up.\u00a0At MSA Safety, I was a founding member of what became the Engineering Productivity department. Over time I've grown from managing CI/CD pipelines and VM infrastructure into leading the team's strategy, operat",
+      "experiences": [
+        {
+          "title": "Founder",
+          "company": "Jenkins Platform Consulting LLC.",
+          "duration": "2 years",
+          "description": ""
+        },
+        {
+          "title": "DevOps & Engineering Productivity Lead | Staff 3 Engineer",
+          "company": "MSA - The Safety Company",
+          "duration": "2 years",
+          "description": "De facto team lead"
+        },
+        {
+          "title": "DevOps Engineer 2/Team Leader",
+          "company": "MSA - The Safety Company",
+          "duration": "2 years",
+          "description": "Manager"
+        },
+        {
+          "title": "DevOps Engineer",
+          "company": "MSA - The Safety Company",
+          "duration": "2 years",
+          "description": ""
+        }
+      ],
+      "skills": [
+        "DevOps Consulting",
+        "Infrastructure Modernization",
+        "Build System Design and Automation",
+        "CI/CD Pipeline Implementation",
+        "Engineering Productivity Assessments",
+        "Diaster Recovery Planning (OT/IT)",
+        "Kubernetes Migration",
+        "Agile Project Management"
+      ]
+    },
+    "job_description": {
+      "job_title": "Embedded Software Engineer",
+      "department": "Engineering & Technology",
+      "level": "Staff I/II",
+      "location": "Cranberry Township, PA",
+      "summary": "The role involves embedded software engineering for safety\u2011critical products that protect firefighters and industrial workers, delivering value to internal and external customers. The position offers growth in technical skills across diverse technology stacks within a global, multidisciplinary team.",
+      "key_responsibilities": [
+        "Work for a tech company that makes solutions and products that directly protect and save lives of firefighters and industrial workers around the world everyday, as well as the environment",
+        "Grow in your craft, your career and the discipline of embedded software engineering while simultaneously delivering tangible and recognized value to internal and external customers",
+        "Gain experience on a variety of technology stacks and product types as part of a highly engaged, highly skilled team that spans different skillsets, backgrounds, roles and global locations",
+        "Firefighter equipment, gas detectors and industrial worker gear with various sensor technologies (e.g. thermal imaging, environmental sensing, location, infrared/lasers)",
+        "IoT style ecosystem of physical/digital products with wireless and wired connectivity (e.g. AWS, cellular, GNSS, BLE)"
+      ],
+      "requirements": [
+        "Your mindset is one of personal, team and company growth",
+        "You want your work to be meaningful and you want to launch awesome products",
+        "You don\u2019t like doing the same thing over and over, you want to be challenged and to make a difference",
+        "You value understanding the context and big picture while focusing on and working through the details of technical solutions",
+        "You\u2019re motivated to help others and to be helped by others as part of reaching larger goals together"
+      ]
+    },
+    "company_context": {
+      "company_name": "MSA Safety",
+      "industry": "Public Safety",
+      "company_size": "1,001-5,000 employees",
+      "website": "http://www.MSAsafety.com",
+      "company_overview": "MSA Safety provides specialized technology platforms and enterprise software services.",
+      "organizational_structure": "Engineering managers and functional directors oversee engineering requisitions and interview pipelines at MSA Safety."
+    }
+  },
+  {
+    "dataset_id": 8,
+    "candidate_name": "Jordan Floyd",
+    "target_job": "Devops Engineer",
+    "company": "Wilcore Technologies, Inc.",
+    "candidate_profile": {
+      "candidate_name": "Jordan Floyd",
+      "current_title": "Software Engineering Leader",
+      "location": "Durham, North Carolina, United States",
+      "summary": "Software Engineering Leader",
+      "experiences": [
+        {
+          "title": "Engineering Manager",
+          "company": "Wilcore Technologies, Inc.",
+          "duration": "2 years",
+          "description": ""
+        },
+        {
+          "title": "Founder",
+          "company": "Massbridge Software",
+          "duration": "2 years",
+          "description": ""
+        },
+        {
+          "title": "Chief Technology Officer",
+          "company": "Boomy",
+          "duration": "2 years",
+          "description": ""
+        },
+        {
+          "title": "Director Of Engineering",
+          "company": "Boomy",
+          "duration": "2 years",
+          "description": ""
+        }
+      ],
+      "skills": [
+        "Process Improvement",
+        "iOS",
+        "Node.js",
+        "MongoDB",
+        "Cascading Style Sheets (CSS)",
+        "Redux",
+        "JSP",
+        "AngularJS"
+      ]
+    },
+    "job_description": {
+      "job_title": "Devops Engineer",
+      "department": "Engineering & Technology",
+      "level": "Not Available",
+      "location": "Stafford, VA",
+      "summary": "Wilcore Technologies is seeking a DevOps Engineer to build and document CI/CD pipelines, create infrastructure using CloudFormation, and help establish a modern data science and development environment for federal clients. The role involves close collaboration with existing DevOps engineers and requires strong AWS, container, and automation expertise.",
+      "key_responsibilities": [
+        "Working hand in hand with great devops engineers building out devops best practices in the federal space.",
+        "creating and documenting CI/CD jobs",
+        "creating infrastructure with Cloudformation",
+        "helping define and build a modern data science/development environment",
+        "Performs other related duties assigned"
+      ],
+      "requirements": [
+        "Experience with GitHub Actions, CI/CD pipelines, and infrastructure-as-code tools like CloudFormation and Terraform.",
+        "Proficiency in managing AWS environments (ECS, S3, Lambda, RDS) and supporting Linux-based systems.",
+        "Strong background with Docker and container orchestration, including debugging and optimization.",
+        "Familiarity with data science platforms such as SageMaker, DataZone, and Athena.",
+        "Familiarity with Python and Go"
+      ]
+    },
+    "company_context": {
+      "company_name": "Wilcore Technologies, Inc.",
+      "industry": "IT System Custom Software Development",
+      "company_size": "51-200 employees",
+      "website": "https://www.wilcore.io",
+      "company_overview": "As a Service-Disabled Veteran-Owned Small Business (SDVOSB) civic technology agency, Wilcore Technologies is striving to transform the relationship between the people and government through accessible citizen-centered design and digital services. With our veteran-led team, we aim to revolutionize the digital landscape by crafting solutions that prioritize streamlined processes, anticipate user nee",
+      "organizational_structure": "Engineering managers and functional directors oversee engineering requisitions and interview pipelines at Wilcore Technologies, Inc.."
+    }
+  },
+  {
+    "dataset_id": 9,
+    "candidate_name": "Anthony Gravell",
+    "target_job": "Devops Engineer",
+    "company": "Wilcore Technologies, Inc.",
+    "candidate_profile": {
+      "candidate_name": "Anthony Gravell",
+      "current_title": "Software Engineering Manager",
+      "location": "Hooksett, New Hampshire, United States",
+      "summary": "Full-stack software engineer currently focused on projects for the Department of Veterans Affairs.",
+      "experiences": [
+        {
+          "title": "Engineering Manager",
+          "company": "Wilcore Technologies, Inc.",
+          "duration": "2 years",
+          "description": "Management & Leadership"
+        },
+        {
+          "title": "Lead Software Engineer",
+          "company": "Wilcore Technologies, Inc.",
+          "duration": "2 years",
+          "description": "- Lead Engineer for the Department of Veterans Affairs' My HealtheVet platform"
+        },
+        {
+          "title": "Senior Software Engineer",
+          "company": "By Light Professional IT Services",
+          "duration": "2 years",
+          "description": "- Led back-end integrations of Oracle Health APIs (FHIR R4) with various APIs, providing healthcare data to millions of Veterans (Java, Maven, Oracle SQL, RabbitMQ and Spring Boot)"
+        },
+        {
+          "title": "Lead Software Engineer",
+          "company": "Advanced Kiosks",
+          "duration": "2 years",
+          "description": "- Led redesign and successful migration of legacy Polymer web applications to a modern React/Node.js stack, including company's customer-facing flagship software"
+        }
+      ],
+      "skills": [
+        "Oracle Health",
+        "Node.js",
+        "Fast Healthcare Interoperability Resources (FHIR)",
+        "Redux.js",
+        "Full-Stack Development",
+        "Datadog",
+        "Kibana",
+        "Maven"
+      ]
+    },
+    "job_description": {
+      "job_title": "Devops Engineer",
+      "department": "Engineering & Technology",
+      "level": "Not Available",
+      "location": "Stafford, VA",
+      "summary": "Wilcore Technologies is seeking a DevOps Engineer to build and document CI/CD pipelines, create infrastructure using CloudFormation, and help establish a modern data science and development environment for federal clients. The role involves close collaboration with existing DevOps engineers and requires strong AWS, container, and automation expertise.",
+      "key_responsibilities": [
+        "Working hand in hand with great devops engineers building out devops best practices in the federal space.",
+        "creating and documenting CI/CD jobs",
+        "creating infrastructure with Cloudformation",
+        "helping define and build a modern data science/development environment",
+        "Performs other related duties assigned"
+      ],
+      "requirements": [
+        "Experience with GitHub Actions, CI/CD pipelines, and infrastructure-as-code tools like CloudFormation and Terraform.",
+        "Proficiency in managing AWS environments (ECS, S3, Lambda, RDS) and supporting Linux-based systems.",
+        "Strong background with Docker and container orchestration, including debugging and optimization.",
+        "Familiarity with data science platforms such as SageMaker, DataZone, and Athena.",
+        "Familiarity with Python and Go"
+      ]
+    },
+    "company_context": {
+      "company_name": "Wilcore Technologies, Inc.",
+      "industry": "IT System Custom Software Development",
+      "company_size": "51-200 employees",
+      "website": "https://www.wilcore.io",
+      "company_overview": "As a Service-Disabled Veteran-Owned Small Business (SDVOSB) civic technology agency, Wilcore Technologies is striving to transform the relationship between the people and government through accessible citizen-centered design and digital services. With our veteran-led team, we aim to revolutionize the digital landscape by crafting solutions that prioritize streamlined processes, anticipate user nee",
+      "organizational_structure": "Engineering managers and functional directors oversee engineering requisitions and interview pipelines at Wilcore Technologies, Inc.."
+    }
+  },
+  {
+    "dataset_id": 10,
+    "candidate_name": "Nicholas Dykzeul",
+    "target_job": "Devops Engineer",
+    "company": "Wilcore Technologies, Inc.",
+    "candidate_profile": {
+      "candidate_name": "Nicholas Dykzeul",
+      "current_title": "Engineering Manager at Wilcore Technologies",
+      "location": "Eagle, Idaho, United States",
+      "summary": "As a seasoned Web Developer with 20 years of experience across various industries, I have extensive experience in creating a wide range of web solutions, from complex PHP web apps, CMS-driven sites, APIs, to front-end solutions. With a strong background in web technologies, I have effectively led cross-functional teams and significantly contributed to several high-profile projects. While my educat",
+      "experiences": [
+        {
+          "title": "Engineering Manager",
+          "company": "Wilcore Technologies, Inc.",
+          "duration": "2 years",
+          "description": ""
+        },
+        {
+          "title": "Software Engineer II",
+          "company": "Wilcore Technologies, Inc.",
+          "duration": "2 years",
+          "description": "\u2022 Develop and maintain VA\u2019s eScreening app using Java and Spring Boot."
+        },
+        {
+          "title": "Freelance Web Developer",
+          "company": "Self Employed",
+          "duration": "2 years",
+          "description": "\u2022 Full-stack web development, support and project consultation."
+        },
+        {
+          "title": "Senior Software Engineer",
+          "company": "Oddball",
+          "duration": "2 years",
+          "description": "\u2022 Worked in a fast paced Agile team environment to build the new opm.gov website."
+        }
+      ],
+      "skills": [
+        "LESS",
+        "XHTML",
+        "Web Applications",
+        "Cascading Style Sheets (CSS)",
+        "SEO",
+        "User Interface Design",
+        "ASP",
+        "JavaScript"
+      ]
+    },
+    "job_description": {
+      "job_title": "Devops Engineer",
+      "department": "Engineering & Technology",
+      "level": "Not Available",
+      "location": "Stafford, VA",
+      "summary": "Wilcore Technologies is seeking a DevOps Engineer to build and document CI/CD pipelines, create infrastructure using CloudFormation, and help establish a modern data science and development environment for federal clients. The role involves close collaboration with existing DevOps engineers and requires strong AWS, container, and automation expertise.",
+      "key_responsibilities": [
+        "Working hand in hand with great devops engineers building out devops best practices in the federal space.",
+        "creating and documenting CI/CD jobs",
+        "creating infrastructure with Cloudformation",
+        "helping define and build a modern data science/development environment",
+        "Performs other related duties assigned"
+      ],
+      "requirements": [
+        "Experience with GitHub Actions, CI/CD pipelines, and infrastructure-as-code tools like CloudFormation and Terraform.",
+        "Proficiency in managing AWS environments (ECS, S3, Lambda, RDS) and supporting Linux-based systems.",
+        "Strong background with Docker and container orchestration, including debugging and optimization.",
+        "Familiarity with data science platforms such as SageMaker, DataZone, and Athena.",
+        "Familiarity with Python and Go"
+      ]
+    },
+    "company_context": {
+      "company_name": "Wilcore Technologies, Inc.",
+      "industry": "IT System Custom Software Development",
+      "company_size": "51-200 employees",
+      "website": "https://www.wilcore.io",
+      "company_overview": "As a Service-Disabled Veteran-Owned Small Business (SDVOSB) civic technology agency, Wilcore Technologies is striving to transform the relationship between the people and government through accessible citizen-centered design and digital services. With our veteran-led team, we aim to revolutionize the digital landscape by crafting solutions that prioritize streamlined processes, anticipate user nee",
+      "organizational_structure": "Engineering managers and functional directors oversee engineering requisitions and interview pipelines at Wilcore Technologies, Inc.."
+    }
+  }
+]
