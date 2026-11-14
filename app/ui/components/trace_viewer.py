@@ -1,6 +1,8 @@
 """Expandable trace viewer component displaying per-agent execution telemetry."""
 import streamlit as st
+from app.schemas.agents import humanize_field_label
 from typing import Dict, Any
+from app.schemas.agents import format_as_markdown_bullets
 
 def render_agent_card(title: str, agent_trace: Dict[str, Any], badge_color: str = "blue") -> None:
     """Renders details for an individual agent in an expander."""
@@ -23,18 +25,18 @@ def render_agent_card(title: str, agent_trace: Dict[str, Any], badge_color: str 
         if output:
             if "argument" in output:
                 st.markdown("##### Generated Argument (Markdown)")
-                st.markdown(output["argument"])
+                st.markdown(format_as_markdown_bullets(output["argument"]))
                 st.caption(f"**Confidence Score:** {output.get('confidence_score', 'N/A')}/10")
                 if output.get("supporting_evidence"):
                     st.markdown("##### Supporting Evidence Citations")
                     for ev in output.get("supporting_evidence", []):
-                        st.caption(f"• `{ev.get('source_field')}`: {ev.get('exact_value')}")
+                        st.caption(f"• {humanize_field_label(ev.get('source_field'))}: {ev.get('exact_value')}")
             elif "winning_argument" in output:
                 st.markdown(f"##### Decision: **{output.get('decision', 'N/A')}** ({output.get('confidence_percentage', 0)}%)")
                 st.markdown("##### Winning Argument")
-                st.markdown(output.get("winning_argument", "N/A"))
+                st.markdown(format_as_markdown_bullets(output.get("winning_argument", "N/A")))
                 st.markdown("##### Judge Reasoning")
-                st.markdown(output.get("reasoning", "N/A"))
+                st.markdown(format_as_markdown_bullets(output.get("reasoning", "N/A")))
 
             with st.expander("🧾 Exact Raw Output (JSON)", expanded=False):
                 st.json(output)

@@ -174,7 +174,7 @@ def test_agent_prompts_share_the_doctrine_and_route_uniquely():
         "Gate 1", "Gate 2", "Gate 3",
         "MICRO", "SMALL", "GROWTH", "MID_SIZE", "LARGE", "ENTERPRISE",
         "Vice President", "Managing Director", "FINANCIAL SERVICES",
-        "Reach rule", "flip", "reporting_to",
+        "Reach rule", "what would change the answer", "reporting_to",
     ],
 )
 def test_doctrine_covers_required_edge_cases(needle):
@@ -218,3 +218,17 @@ def test_real_samples_produce_sensible_signals():
     assert signals["company_size"]["size_tier"] == "LARGE"
     jd_paths = [i["path"] for i in signals["explicit_authority_statements"]["job_description_fields"]]
     assert "job_description.reporting_to" in jd_paths
+
+
+@pytest.mark.parametrize(
+    "needle",
+    [
+        "OWNING-FUNCTION-HEAD RULE",
+        "STRUCTURAL PLAUSIBILITY IS THE NORMAL BASIS",
+        "never require, wait for, or penalize the absence of a reporting line",
+        "different sub-specialty",
+    ],
+)
+def test_doctrine_handles_missing_reporting_lines_and_small_company_heads(needle):
+    assert needle in HIRING_MANAGER_DOCTRINE
+    assert needle in JUDGE_SYSTEM_PROMPT or needle.lower() in JUDGE_SYSTEM_PROMPT.lower()

@@ -1,13 +1,20 @@
 import os
+import urllib.parse
 from pymongo import MongoClient
 from bson import ObjectId
 import json
 from pathlib import Path
 
-# Connect to MongoDB staging (STRICTLY READ-ONLY). Keep credentials out of source control.
-uri = os.environ.get("MONGODB_URI")
+# Connect to MongoDB staging (STRICTLY READ-ONLY)
+uri = os.environ.get("MONGODB_URI") or os.environ.get("MONGO_URI")
 if not uri:
-    raise RuntimeError("Set MONGODB_URI in the environment before running this script.")
+    user = urllib.parse.quote_plus(os.getenv('MONGO_USERNAME', ''))
+    pwd = urllib.parse.quote_plus(os.getenv('MONGO_PASSWORD', ''))
+    cluster = os.getenv('MONGO_CLUSTER_URL', '')
+    if user and pwd and cluster:
+        uri = f'mongodb+srv://{user}:{pwd}@{cluster}'
+    else:
+        raise RuntimeError("Set MONGODB_URI in the environment before running this script.")
 
 client = MongoClient(uri, serverSelectionTimeoutMS=10000)
 db = client['hp_data']
@@ -23,7 +30,6 @@ datasets = []
 seen_names = set(existing_names)
 company_counts = {}
 
-# Target a wide variety of top real companies from MongoDB
 links = list(db['hm_job_profile_links'].find())
 
 for l in links:
@@ -58,29 +64,29 @@ for l in links:
     if not comp_doc:
         comp_doc = db['company_information'].find_one({'name': {'$regex': f'^{cname}$', '$options': 'i'}}) or db['company_information'].find_one({'name': {'$regex': cname, '$options': 'i'}}) or {}
 
-    # Skip generic placeholder companies
-    if cname.lower() in ('technology company', 'unknown', 'stealth'):
+    if cname.lower() in ('technology company', 'unknown', 'stealth', 'voyspark'):
         continue
 
-    # Ensure rich job description with real responsibilities
     jd_desc = pjd.get('description') or {}
     jd_pos = pjd.get('position') or {}
     resps = jd_desc.get('responsibilities') or []
     reqs = jd_desc.get('requirements') or []
 
-    # Ensure candidate has experiences
-    exps = person.get('experiences') or []
-    if not exps:
+    # Require full, rich job descriptions with multiple responsibilities and requirements
+    if len(resps) < 4 or len(reqs) < 4:
         continue
 
-    # Limit to at most 2 candidates per company to ensure diversity
+    exps = person.get('experiences') or []
+    if not exps or len(exps) == 0:
+        continue
+
     if company_counts.get(cname, 0) >= 2:
         continue
 
     seen_names.add(p_name.strip())
     company_counts[cname] = company_counts.get(cname, 0) + 1
 
-    # 1. CANDIDATE PROFILE (Raw values directly as they are in MongoDB)
+    # 1. CANDIDATE PROFILE (All real values from MongoDB without omissions)
     formatted_exps = []
     for exp in exps:
         if isinstance(exp, dict):
@@ -92,37 +98,54 @@ for l in links:
                 'description': exp.get('description') or ''
             })
 
-    hr_profile = {
+    # Clean skills (strings only)
+    raw_skills = person.get('skills') or []
+    clean_skills = []
+    for s in raw_skills:
+        if isinstance(s, dict):
+            clean_skills.append(s.get('name') or str(s))
+        elif isinstance(s, str):
+            clean_skills.append(s)
+
+    candidate_profile = {
         'candidate_name': p_name.strip(),
         'current_title': person.get('sub_headline') or person.get('headline') or '',
         'location': person.get('location') or '',
         'summary': person.get('about') or person.get('headline') or '',
         'experiences': formatted_exps,
-        'skills': person.get('skills') or []
+        'skills': clean_skills
     }
     if person.get('education') or person.get('educations'):
-        hr_profile['education'] = person.get('education') or person.get('educations')
+        candidate_profile['education'] = person.get('education') or person.get('educations')
 
-    # 2. JOB DESCRIPTION (Raw values directly as they are in MongoDB without changes)
+    # 2. JOB DESCRIPTION (All parsed JD fields from MongoDB)
+    jd_skills_raw = jd_desc.get('skills') or []
+    jd_skills = []
+    for s in jd_skills_raw:
+        if isinstance(s, dict):
+            jd_skills.append(s.get('name') or str(s))
+        elif isinstance(s, str):
+            jd_skills.append(s)
+
     job_description = {
         'job_title': job.get('title') or jd_pos.get('full_title') or jd_pos.get('main_title') or '',
         'department': jd_pos.get('department') or '',
         'level': jd_pos.get('level') or '',
         'location': job.get('location') or (jd_desc.get('locations') if isinstance(jd_desc.get('locations'), str) else ''),
         'employment_type': jd_desc.get('employment_type') or '',
+        'remote_type': jd_desc.get('remote_type') or '',
+        'salary': jd_desc.get('salary') or '',
         'summary': jd_desc.get('summary') or job.get('description') or '',
         'key_responsibilities': resps,
         'requirements': reqs,
-        'skills': jd_desc.get('skills') or []
+        'skills': jd_skills
     }
     if jd_desc.get('core_keywords'):
         job_description['core_keywords'] = jd_desc.get('core_keywords')
-    if jd_desc.get('other_information'):
-        job_description['other_information'] = jd_desc.get('other_information')
     if jd_desc.get('benefits'):
         job_description['benefits'] = jd_desc.get('benefits')
 
-    # 3. COMPANY CONTEXT (Raw values directly as they are in MongoDB without changes)
+    # 3. COMPANY CONTEXT (All company fields from MongoDB)
     company_context = {
         'company_name': (comp_doc.get('name') if comp_doc else None) or cname,
         'industry': (comp_doc.get('industry') if comp_doc else None) or hiring_comp.get('industry') or '',
@@ -139,13 +162,12 @@ for l in links:
         'candidate_name': p_name.strip(),
         'target_job': job_description['job_title'],
         'company': company_context['company_name'],
-        'hr_profile': hr_profile,
-        'candidate_profile': hr_profile,
+        'candidate_profile': candidate_profile,
         'job_description': job_description,
         'company_context': company_context
     })
 
-    print(f"Extracted #{len(datasets)}: {p_name.strip()} | {job_description['job_title']} @ {company_context['company_name']}")
+    print(f"Extracted #{len(datasets)}: {p_name.strip()} | {job_description['job_title']} @ {company_context['company_name']} (Resps: {len(resps)}, Reqs: {len(reqs)})")
 
     if len(datasets) >= 20:
         break

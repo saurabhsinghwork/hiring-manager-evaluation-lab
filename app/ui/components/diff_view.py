@@ -1,6 +1,8 @@
 """Side-by-side comparison view across multiple evaluation runs with synchronized row alignment."""
 import streamlit as st
+from app.schemas.agents import humanize_field_label
 from typing import List, Dict, Any
+from app.schemas.agents import format_as_markdown_bullets
 
 def render_comparison_view(traces: List[Dict[str, Any]]) -> None:
     """Renders side-by-side comparative analysis of 2 or more executions with strictly aligned headings."""
@@ -60,7 +62,7 @@ def render_comparison_view(traces: List[Dict[str, Any]]) -> None:
             judge = trace.get("judge_result") or {}
             win_arg = judge.get("winning_argument", "N/A")
             with st.container(height=180, border=True):
-                st.markdown(win_arg)
+                st.markdown(format_as_markdown_bullets(win_arg))
 
     st.write("")
 
@@ -72,7 +74,7 @@ def render_comparison_view(traces: List[Dict[str, Any]]) -> None:
             reasoning = judge.get("reasoning", "N/A")
             with st.expander("▾ Judge Reasoning", expanded=True):
                 with st.container(height=260, border=False):
-                    st.markdown(reasoning)
+                    st.markdown(format_as_markdown_bullets(reasoning))
 
     st.write("")
 
@@ -87,13 +89,13 @@ def render_comparison_view(traces: List[Dict[str, Any]]) -> None:
             with st.expander("▾ Opposing Agent Arguments", expanded=False):
                 with st.container(height=380, border=False):
                     st.markdown("**🟢 FOR Agent Argument:**")
-                    st.markdown(for_out.get("argument", "N/A"))
+                    st.markdown(format_as_markdown_bullets(for_out.get("argument", "N/A")))
                     st.caption(f"Confidence: {for_out.get('confidence_score', 'N/A')}/10")
 
                     if for_out.get("supporting_evidence"):
                         with st.expander("🔍 FOR Supporting Evidence", expanded=False):
                             for ev in for_out.get("supporting_evidence", []):
-                                st.caption(f"• `{ev.get('source_field')}`: {ev.get('exact_value')}")
+                                st.caption(f"• {humanize_field_label(ev.get('source_field'))}: {ev.get('exact_value')}")
 
                     with st.expander("🧾 Exact Raw FOR Output (JSON)", expanded=False):
                         if for_out:
@@ -104,13 +106,13 @@ def render_comparison_view(traces: List[Dict[str, Any]]) -> None:
                     st.divider()
 
                     st.markdown("**🔴 AGAINST Agent Argument:**")
-                    st.markdown(against_out.get("argument", "N/A"))
+                    st.markdown(format_as_markdown_bullets(against_out.get("argument", "N/A")))
                     st.caption(f"Confidence: {against_out.get('confidence_score', 'N/A')}/10")
 
                     if against_out.get("supporting_evidence"):
                         with st.expander("🔍 AGAINST Supporting Evidence", expanded=False):
                             for ev in against_out.get("supporting_evidence", []):
-                                st.caption(f"• `{ev.get('source_field')}`: {ev.get('exact_value')}")
+                                st.caption(f"• {humanize_field_label(ev.get('source_field'))}: {ev.get('exact_value')}")
 
                     with st.expander("🧾 Exact Raw AGAINST Output (JSON)", expanded=False):
                         if against_out:

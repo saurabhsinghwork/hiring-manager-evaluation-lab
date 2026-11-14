@@ -2,8 +2,10 @@
 import json
 import httpx
 import streamlit as st
+from app.schemas.agents import humanize_field_label
 from typing import Dict, Any, List
 
+from app.schemas.agents import format_as_markdown_bullets
 from app.ui.components.json_editor import parse_and_validate_json, render_json_input_area
 
 def fetch_model_options(api_url: str) -> List[Dict[str, Any]]:
@@ -161,11 +163,11 @@ def render_workflow_tab(api_status: Dict[str, Any]) -> None:
 
             st.markdown("#### Winning Argument")
             with st.container(border=True):
-                st.markdown(judge.get("winning_argument", "N/A"))
+                st.markdown(format_as_markdown_bullets(judge.get("winning_argument", "N/A")))
 
             st.markdown("#### Judge Reasoning & Evidence Verification")
             with st.container(border=True):
-                st.markdown(judge.get("reasoning", "N/A"))
+                st.markdown(format_as_markdown_bullets(judge.get("reasoning", "N/A")))
 
             # Argument previews
             with st.expander("🔍 View Opposing Arguments Submitted to Judge", expanded=False):
@@ -173,23 +175,23 @@ def render_workflow_tab(api_status: Dict[str, Any]) -> None:
                 with arg_col1:
                     st.markdown("**🟢 Argument FOR Candidate:**")
                     if res.get("for_agent"):
-                        st.markdown(res["for_agent"].get("argument", "N/A"))
+                        st.markdown(format_as_markdown_bullets(res["for_agent"].get("argument", "N/A")))
                         st.caption(f"Confidence: {res['for_agent'].get('confidence_score', 'N/A')}/10")
                         if res["for_agent"].get("supporting_evidence"):
                             with st.expander("📋 FOR Evidence Items", expanded=False):
                                 for ev in res["for_agent"]["supporting_evidence"]:
-                                    st.caption(f"• `{ev.get('source_field')}`: {ev.get('exact_value')}")
+                                    st.caption(f"• {humanize_field_label(ev.get('source_field'))}: {ev.get('exact_value')}")
                         with st.expander("🧾 Exact Raw FOR Output (JSON)", expanded=False):
                             st.json(res["for_agent"])
                 with arg_col2:
                     st.markdown("**🔴 Argument AGAINST Candidate:**")
                     if res.get("against_agent"):
-                        st.markdown(res["against_agent"].get("argument", "N/A"))
+                        st.markdown(format_as_markdown_bullets(res["against_agent"].get("argument", "N/A")))
                         st.caption(f"Confidence: {res['against_agent'].get('confidence_score', 'N/A')}/10")
                         if res["against_agent"].get("supporting_evidence"):
                             with st.expander("📋 AGAINST Evidence Items", expanded=False):
                                 for ev in res["against_agent"]["supporting_evidence"]:
-                                    st.caption(f"• `{ev.get('source_field')}`: {ev.get('exact_value')}")
+                                    st.caption(f"• {humanize_field_label(ev.get('source_field'))}: {ev.get('exact_value')}")
                         with st.expander("🧾 Exact Raw AGAINST Output (JSON)", expanded=False):
                             st.json(res["against_agent"])
 
