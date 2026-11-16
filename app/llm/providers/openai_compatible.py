@@ -61,18 +61,38 @@ class OpenAICompatibleAdapter(BaseChatAdapter):
         return ""
 
     async def _complete(self, system_prompt: str, prompt: str, json_mode: bool) -> str:
+        is_reasoning = any(prefix in self.model_id.lower() for prefix in ("gpt-6", "gpt-5", "o1", "o3"))
         kwargs = dict(
             model=self.model_id,
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": prompt},
             ],
-            temperature=0.1,
-            max_tokens=6000,
         )
+        if is_reasoning:
+            kwargs["max_completion_tokens"] = 6000
+        else:
+            kwargs["temperature"] = 0.1
+            kwargs["max_tokens"] = 6000
+
         if json_mode:
             kwargs["response_format"] = {"type": "json_object"}
-        response = await self.client.chat.completions.create(**kwargs)
+        try:
+            response = await self.client.chat.completions.create(**kwargs)
+        except Exception as e:
+            err_str = str(e).lower()
+            retry = False
+            if "max_completion_tokens" in err_str and "max_tokens" in kwargs:
+                kwargs.pop("max_tokens", None)
+                kwargs["max_completion_tokens"] = 6000
+                retry = True
+            if "temperature" in err_str and "temperature" in kwargs:
+                kwargs.pop("temperature", None)
+                retry = True
+            if retry:
+                response = await self.client.chat.completions.create(**kwargs)
+            else:
+                raise
         return response.choices[0].message.content or ""
 
     async def generate_structured(

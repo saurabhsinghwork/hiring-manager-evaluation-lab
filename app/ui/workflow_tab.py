@@ -1,6 +1,5 @@
 """Workflow execution tab for submitting evaluations and viewing decisions."""
 import json
-from pathlib import Path
 import httpx
 import streamlit as st
 from app.schemas.agents import humanize_field_label
@@ -26,36 +25,6 @@ def render_workflow_tab(api_status: Dict[str, Any]) -> None:
 
     st.markdown("### 1. Configure Evaluation Scenario")
     st.write("Provide the candidate's candidate profile, job posting requisition, and company organizational context.")
-
-    # Quick-load real staging datasets directly from local storage
-    datasets_file = Path("data/samples/new_20_real_datasets.json")
-    if datasets_file.exists():
-        try:
-            with open(datasets_file, "r", encoding="utf-8") as f:
-                real_datasets = json.load(f)
-            ds_options = {
-                idx: f"#{d.get('dataset_id', idx+1)}: {d.get('candidate_name')} → {d.get('target_job')} @ {d.get('company')}"
-                for idx, d in enumerate(real_datasets)
-            }
-            c_select, c_btn = st.columns([4, 1])
-            with c_select:
-                selected_ds_idx = st.selectbox(
-                    "⚡ Quick-Load Real Staging Dataset (1 to 20)",
-                    options=list(ds_options.keys()),
-                    format_func=lambda i: ds_options[i],
-                    key="real_dataset_selector"
-                )
-            with c_btn:
-                st.write("")
-                st.write("")
-                if st.button("📥 Load Dataset", use_container_width=True):
-                    chosen = real_datasets[selected_ds_idx]
-                    st.session_state["candidate_json_input"] = json.dumps(chosen.get("candidate_profile", {}), indent=2)
-                    st.session_state["jd_json_input"] = json.dumps(chosen.get("job_description", {}), indent=2)
-                    st.session_state["company_json_input"] = json.dumps(chosen.get("company_context", {}), indent=2)
-                    st.rerun()
-        except Exception:
-            pass
 
     # Three JSON textareas in 3 side-by-side columns
     col1, col2, col3 = st.columns(3)

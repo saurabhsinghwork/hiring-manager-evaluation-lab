@@ -47,11 +47,11 @@ class ModelRegistry:
             },
             "chatgpt_paid": {
                 "key": "chatgpt_paid",
-                "label": "ChatGPT Paid Model",
+                "label": "GPT-6 Luna" if "luna" in (self.settings.chatgpt_model_id or "").lower() else "ChatGPT Paid Model",
                 "enabled": chatgpt_enabled,
                 "provider_type": "openai_compatible",
                 "provider_name": "openai",
-                "model_id": self.settings.chatgpt_model_id or "gpt-4o",
+                "model_id": self.settings.chatgpt_model_id or "gpt-6-luna",
                 "api_key": self.settings.openai_api_key,
                 "base_url": self.settings.openai_base_url or "https://api.openai.com/v1",
                 "timeout_seconds": self.settings.model_timeout_seconds,
