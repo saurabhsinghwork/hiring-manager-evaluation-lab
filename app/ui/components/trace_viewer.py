@@ -4,17 +4,32 @@ from app.schemas.agents import humanize_field_label
 from typing import Dict, Any
 from app.schemas.agents import format_as_markdown_bullets
 
+def agent_model_name(model_id: Any) -> str:
+    """Short friendly model name for display (Qwen, GPT-OSS, ...)."""
+    text = str(model_id or "").lower()
+    if "qwen" in text:
+        return "Qwen"
+    if "oss" in text:
+        return "GPT-OSS"
+    return str(model_id) if model_id else "N/A"
+
+
+def agent_model_of(trace: Dict[str, Any], agent: str) -> str:
+    """Friendly model name for one agent ('for', 'against', 'judge') of a trace."""
+    return agent_model_name(((trace or {}).get("agents", {}).get(agent) or {}).get("model_id"))
+
+
 def render_agent_card(title: str, agent_trace: Dict[str, Any], badge_color: str = "blue") -> None:
     """Renders details for an individual agent in an expander."""
     status = agent_trace.get("status", "unknown").upper()
     duration = agent_trace.get("duration_ms", 0)
-    model_id = agent_trace.get("model_id", "N/A")
+    model_id = agent_model_name(agent_trace.get("model_id", "N/A"))
 
     expander_title = f"{title} — Status: {status} | Duration: {duration}ms | Model: {model_id}"
     with st.expander(expander_title, expanded=(status == "COMPLETED")):
         col1, col2, col3 = st.columns(3)
         with col1:
-            st.caption(f"**Model ID:** `{model_id}`")
+            st.caption(f"**Model:** `{model_id}`")
         with col2:
             st.caption(f"**Execution Time:** `{duration} ms`")
         with col3:

@@ -117,10 +117,11 @@ class OpenAICompatibleAdapter(BaseChatAdapter):
         )
         attempts = [(enriched_system_prompt, True), (compact, False), (compact, False)]
         last_error: Exception = RuntimeError("no attempt made")
+        user_prompt = prompt
         try:
             for system_text, json_mode in attempts:
                 try:
-                    raw_text = await self._complete(system_text, prompt, json_mode)
+                    raw_text = await self._complete(system_text, user_prompt, json_mode)
                 except APIError as err:
                     salvage = self._failed_generation(err)
                     if not salvage:
@@ -133,6 +134,15 @@ class OpenAICompatibleAdapter(BaseChatAdapter):
                     return response_model.model_validate(self._extract_json(raw_text))
                 except Exception as parse_err:  # malformed JSON or schema mismatch: retry compactly
                     last_error = parse_err
+                    if raw_text.strip() and "{" not in raw_text:
+                        # The model answered in prose: ask it to restate that answer as the JSON object.
+                        user_prompt = (
+                            f"{prompt}\n\nYour previous reply was plain text, not JSON:\n"
+                            f"{raw_text.strip()[:3000]}\n\n"
+                            "Restate that answer as the required JSON object only. Even if the case is weak, "
+                            "give the best honest argument with a low confidence score and quote evidence "
+                            "values exactly from the inputs."
+                        )
             raise last_error
         except (APIError, APITimeoutError) as err:
             sanitized = self._sanitize_error(err)

@@ -14,6 +14,10 @@ from app.graph.state import GraphState
 def _get_iso_now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
+# Cross-model judging: GPT-OSS arguments are judged by Qwen and vice versa. Other models judge themselves.
+_CROSS_JUDGE = {"gpt_oss_120b": "qwen", "qwen": "gpt_oss_120b"}
+
+
 class WorkflowService:
     """Coordinates end-to-end adversarial evaluation workflow."""
 
@@ -30,7 +34,14 @@ class WorkflowService:
         adapter = self.registry.get_adapter(request.model_config_key)
 
         # 2. Compile LangGraph workflow
-        graph = build_evaluation_graph(adapter)
+        judge_adapter = None
+        judge_key = _CROSS_JUDGE.get(request.model_config_key)
+        if judge_key:
+            try:
+                judge_adapter = self.registry.get_adapter(judge_key)
+            except ValueError:
+                judge_adapter = None  # judge model not configured: fall back to the selected model
+        graph = build_evaluation_graph(adapter, judge_adapter)
 
         # 3. Assemble initial graph state
         initial_state: GraphState = {
