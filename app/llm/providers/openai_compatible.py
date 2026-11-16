@@ -1,4 +1,5 @@
 """OpenAI-compatible chat completion provider adapter."""
+import asyncio
 import json
 import logging
 import re
@@ -115,14 +116,24 @@ class OpenAICompatibleAdapter(BaseChatAdapter):
             + "\n\nKeep every text field concise (under 250 words), use \\n for line breaks inside strings, "
               "and escape any double quotes inside strings."
         )
-        attempts = [(enriched_system_prompt, True), (compact, False), (compact, False)]
+        attempts = [
+            (enriched_system_prompt, True), (compact, False), (compact, True),
+            (compact, False), (compact, True),
+        ]
         last_error: Exception = RuntimeError("no attempt made")
+        user_prompt = prompt
         try:
             for system_text, json_mode in attempts:
                 try:
-                    raw_text = await self._complete(system_text, prompt, json_mode)
+                    raw_text = await self._complete(system_text, user_prompt, json_mode)
                 except APIError as err:
                     salvage = self._failed_generation(err)
+                    if getattr(err, "status_code", None) == 429:
+                        last_error = err  # rate limited: wait as the provider suggests, then retry
+                        hint = re.search(r"try again in ([\d.]+)\s*(ms|s)", str(err))
+                        wait = float(hint.group(1)) / (1000 if hint and hint.group(2) == "ms" else 1) if hint else 3.0
+                        await asyncio.sleep(min(wait + 0.5, 20.0))
+                        continue
                     if not salvage:
                         if getattr(err, "status_code", None) == 400:
                             last_error = err
@@ -133,6 +144,16 @@ class OpenAICompatibleAdapter(BaseChatAdapter):
                     return response_model.model_validate(self._extract_json(raw_text))
                 except Exception as parse_err:  # malformed JSON or schema mismatch: retry compactly
                     last_error = parse_err
+                    logger.warning(f"{self.model_id} reply not usable ({parse_err}): {raw_text[:200]!r}")
+                    if raw_text.strip() and isinstance(parse_err, json.JSONDecodeError):
+                        # The model answered in prose: ask it to restate that answer as the JSON object.
+                        user_prompt = (
+                            f"{prompt}\n\nYour previous reply was plain text, not JSON:\n"
+                            f"{raw_text.strip()[:3000]}\n\n"
+                            "Restate that answer as the required JSON object only. Even if the case is weak, "
+                            "give the best honest argument with a low confidence score and quote evidence "
+                            "values exactly from the inputs."
+                        )
             raise last_error
         except (APIError, APITimeoutError) as err:
             sanitized = self._sanitize_error(err)
