@@ -3,6 +3,7 @@ import streamlit as st
 from app.schemas.agents import humanize_field_label
 from typing import List, Dict, Any
 from app.schemas.agents import format_as_markdown_bullets
+from app.ui.components.trace_viewer import agent_model_of
 
 def render_comparison_view(traces: List[Dict[str, Any]]) -> None:
     """Renders side-by-side comparative analysis of 2 or more executions with strictly aligned headings."""
@@ -72,7 +73,7 @@ def render_comparison_view(traces: List[Dict[str, Any]]) -> None:
         with col:
             judge = trace.get("judge_result") or {}
             reasoning = judge.get("reasoning", "N/A")
-            with st.expander("▾ Judge Reasoning", expanded=True):
+            with st.expander(f"▾ Judge Reasoning (Judge: {agent_model_of(trace, 'judge')})", expanded=True):
                 with st.container(height=260, border=False):
                     st.markdown(format_as_markdown_bullets(reasoning))
 
@@ -88,7 +89,7 @@ def render_comparison_view(traces: List[Dict[str, Any]]) -> None:
 
             with st.expander("▾ Opposing Agent Arguments", expanded=False):
                 with st.container(height=380, border=False):
-                    st.markdown("**🟢 FOR Agent Argument:**")
+                    st.markdown(f"**🟢 FOR Agent Argument ({agent_model_of(trace, 'for')}):**")
                     st.markdown(format_as_markdown_bullets(for_out.get("argument", "N/A")))
                     st.caption(f"Confidence: {for_out.get('confidence_score', 'N/A')}/10")
 
@@ -105,7 +106,7 @@ def render_comparison_view(traces: List[Dict[str, Any]]) -> None:
 
                     st.divider()
 
-                    st.markdown("**🔴 AGAINST Agent Argument:**")
+                    st.markdown(f"**🔴 AGAINST Agent Argument ({agent_model_of(trace, 'against')}):**")
                     st.markdown(format_as_markdown_bullets(against_out.get("argument", "N/A")))
                     st.caption(f"Confidence: {against_out.get('confidence_score', 'N/A')}/10")
 

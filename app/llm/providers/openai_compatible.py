@@ -145,7 +145,7 @@ class OpenAICompatibleAdapter(BaseChatAdapter):
                 except Exception as parse_err:  # malformed JSON or schema mismatch: retry compactly
                     last_error = parse_err
                     logger.warning(f"{self.model_id} reply not usable ({parse_err}): {raw_text[:200]!r}")
-                    if raw_text.strip() and isinstance(parse_err, json.JSONDecodeError):
+                    if raw_text.strip() and (isinstance(parse_err, json.JSONDecodeError) or "{" not in raw_text):
                         # The model answered in prose: ask it to restate that answer as the JSON object.
                         user_prompt = (
                             f"{prompt}\n\nYour previous reply was plain text, not JSON:\n"

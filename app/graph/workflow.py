@@ -1,7 +1,7 @@
 """LangGraph workflow assembly with parallel branches, barrier join, and failure handling."""
 import time
 from datetime import datetime, timezone
-from typing import Dict, Any, Literal
+from typing import Dict, Any, Literal, Optional
 from langgraph.graph import StateGraph, START, END
 
 from app.graph.state import GraphState
@@ -12,7 +12,7 @@ from app.schemas.workflow import WorkflowStatus, AgentStatus
 def _get_iso_now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
-def build_evaluation_graph(adapter: BaseChatAdapter):
+def build_evaluation_graph(adapter: BaseChatAdapter, judge_adapter: Optional[BaseChatAdapter] = None):
     r"""Builds and compiles the adversarial evaluation LangGraph.
     
     Workflow Topology:
@@ -32,6 +32,7 @@ def build_evaluation_graph(adapter: BaseChatAdapter):
                  |
                 END
     """
+    judge_adapter = judge_adapter or adapter
     builder = StateGraph(GraphState)
 
     # Node 1: FOR argument agent
@@ -53,7 +54,7 @@ def build_evaluation_graph(adapter: BaseChatAdapter):
             skip_msg = "Judge skipped because one or both argument agents failed."
             now = _get_iso_now()
             skipped_trace = {
-                "model_id": adapter.model_id,
+                "model_id": judge_adapter.model_id,
                 "status": AgentStatus.SKIPPED,
                 "input": {},
                 "output": None,
@@ -71,7 +72,7 @@ def build_evaluation_graph(adapter: BaseChatAdapter):
 
     # Node 4: Judge Agent
     async def judge_agent_step(state: GraphState) -> Dict[str, Any]:
-        return await judge_node(state, adapter)
+        return await judge_node(state, judge_adapter)
 
     # Node 5: Finalize Workflow Status and Overall Timing
     async def finalize_step(state: GraphState) -> Dict[str, Any]:

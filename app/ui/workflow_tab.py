@@ -3,6 +3,7 @@ import json
 import httpx
 import streamlit as st
 from app.schemas.agents import humanize_field_label
+from app.ui.components.trace_viewer import agent_model_of
 from typing import Dict, Any, List
 
 from app.schemas.agents import format_as_markdown_bullets
@@ -165,7 +166,7 @@ def render_workflow_tab(api_status: Dict[str, Any]) -> None:
             with st.container(border=True):
                 st.markdown(format_as_markdown_bullets(judge.get("winning_argument", "N/A")))
 
-            st.markdown("#### Judge Reasoning & Evidence Verification")
+            st.markdown(f"#### Judge Reasoning & Evidence Verification (Judge: {agent_model_of(res.get('trace'), 'judge')})")
             with st.container(border=True):
                 st.markdown(format_as_markdown_bullets(judge.get("reasoning", "N/A")))
 
@@ -173,7 +174,7 @@ def render_workflow_tab(api_status: Dict[str, Any]) -> None:
             with st.expander("🔍 View Opposing Arguments Submitted to Judge", expanded=False):
                 arg_col1, arg_col2 = st.columns(2)
                 with arg_col1:
-                    st.markdown("**🟢 Argument FOR Candidate:**")
+                    st.markdown(f"**🟢 Argument FOR Candidate ({agent_model_of(res.get('trace'), 'for')}):**")
                     if res.get("for_agent"):
                         st.markdown(format_as_markdown_bullets(res["for_agent"].get("argument", "N/A")))
                         st.caption(f"Confidence: {res['for_agent'].get('confidence_score', 'N/A')}/10")
@@ -184,7 +185,7 @@ def render_workflow_tab(api_status: Dict[str, Any]) -> None:
                         with st.expander("🧾 Exact Raw FOR Output (JSON)", expanded=False):
                             st.json(res["for_agent"])
                 with arg_col2:
-                    st.markdown("**🔴 Argument AGAINST Candidate:**")
+                    st.markdown(f"**🔴 Argument AGAINST Candidate ({agent_model_of(res.get('trace'), 'against')}):**")
                     if res.get("against_agent"):
                         st.markdown(format_as_markdown_bullets(res["against_agent"].get("argument", "N/A")))
                         st.caption(f"Confidence: {res['against_agent'].get('confidence_score', 'N/A')}/10")
