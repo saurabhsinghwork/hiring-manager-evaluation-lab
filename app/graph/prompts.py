@@ -57,11 +57,11 @@ The person's CURRENT scope (function, team, product, business unit, region, lega
 
 ## 4. Decoding titles — what the person really is
 Assign two things from evidence (scope, team size, reports, responsibilities, sector), not from the label:
-(a) PEOPLE-MANAGEMENT STATUS: people manager (direct reports evidenced or strongly implied), player-coach, or individual contributor.
+(a) PEOPLE-MANAGEMENT STATUS: people manager (direct reports evidenced or strongly implied), player-coach, or individual contributor. Verify through actual experience descriptions: hands-on IC verbs (architected, developed, implemented, UI libraries, coded) indicate individual contributor or technical specialist; verbs like (led multiple pods, managed team of X, headcount, hiring, performance reviews) indicate people management.
 (b) NORMALIZED LEVEL BAND:
 - B1 entry/junior IC (intern, analyst, associate)
 - B2 mid/senior IC
-- B3 expert IC or team lead without evidenced reports (staff, principal, architect, tech lead, "lead")
+- B3 expert IC or team lead without evidenced reports (staff, principal, architect, chief architect, tech lead, "lead")
 - B4 first-line manager (manager, engineering manager, supervisor, team lead WITH reports)
 - B5 senior manager / group manager / associate director
 - B6 director / head of a function or sub-function
@@ -69,8 +69,8 @@ Assign two things from evidence (scope, team size, reports, responsibilities, se
 - B8 C-suite, founder, president, GM/MD of the whole business
 
 Ambiguity rules (apply every time):
-- "Manager" with project/program/product/account/delivery/relationship/customer-success in the title is usually NOT a people manager. A "Product Manager" does not manage engineers.
-- "Lead", "Head of", "Principal", "Staff", "Architect", "Chief Architect", "Distinguished", "Fellow", "Member of Technical Staff": usually IC or advisory unless direct reports / team ownership are evidenced. "Head of X" in a small company is often the actual function owner.
+- "Manager" with project/program/product/account/delivery/relationship/customer-success in the title is usually NOT a people manager. A "Product Manager" or "IT Program Project Manager" coordinates delivery and initiatives across pods, but does not manage engineers or own technical hiring requisitions.
+- "Lead", "Head of", "Principal", "Staff", "Architect", "Chief Architect", "Distinguished", "Fellow", "Member of Technical Staff": usually IC or advisory unless direct reports / team ownership are evidenced. "Chief Architect" is a senior IC technical track (B3), NOT C-suite (B8). "Head of X" in a small company is often the actual function owner.
 - "Partner": in consulting, law and audit, a practice owner (can hire); in venture capital or private equity, an investor (does not hire inside portfolio companies).
 - "President", "General Manager", "Country Manager": check whether it means the whole company or a unit/region.
 - "Director" in a flat tech company is a genuine management level (B6). In government, healthcare, universities and some firms it can be a small-unit lead (B4–B5).
@@ -78,9 +78,15 @@ Ambiguity rules (apply every time):
 - Titles in small companies are inflated (a "VP" of a 20-person firm may run two people); titles in huge firms are diluted.
 
 SECTOR TITLE CONVENTIONS — never map a title across sectors without calibrating:
-- FINANCIAL SERVICES (banks, investment banks, asset/wealth managers, insurers, brokerages). Rank ladder: Analyst → Associate → AVP → Vice President → Director / Executive Director / SVP → Managing Director. A "Vice President" is a MID-CAREER rank held by thousands of people per firm: often a senior IC or a team lead (≈ B3–B4, up to B5 with a large team), NOT a company officer or function head. "Director / Executive Director" ≈ B5–B6. "Managing Director" ≈ B6–B7 (an MD may run a 300-person division, or a single desk or practice area with six people). "Senior Vice President" varies by firm (≈ B5). "Head of X" and "Chief X Officer" usually denote real function ownership. So in finance a VP, MD, or "Senior Director" title must be located using evidence (team size, reports, scope, function), and a senior-sounding title alone neither qualifies nor disqualifies the person. A VP who leads the very team the role sits in can be the right line manager; an MD of an unrelated business line is not.
+- FINANCIAL SERVICES (banks, investment banks, asset/wealth managers, insurers, brokerages, e.g. BNY Mellon, JPMorgan Chase, Citi, Goldman Sachs, Morgan Stanley). In financial institutions, titles reflect CORPORATE COMPENSATION RANK/GRADE, not organizational management authority.
+  Rank ladder: Analyst (B1) → Associate (B2) → Assistant Vice President / AVP (B2–B3) → Vice President (B3–B4) → Director / Executive Director / SVP (B5–B6) → Managing Director (B6–B7).
+  - A "Vice President" is a MID-CAREER rank held by thousands of employees per firm: typically a senior IC, systems architect, senior developer, or team lead (≈ B3–B4), NOT a company officer or function head. A "Vice President, Software Engineering" or "Vice President of Cloud Infrastructure" who architected UI component libraries or engineered microservices is an individual contributor peer (Band B3), not an executive hiring manager. Never treat a banking VP as an executive officer based on the word "President".
+  - Job descriptions in financial services often use corporate rank as well (e.g. "Senior Vice President, Full Stack Engineer" or level "Vice President" for a Senior Developer opening). Neutralize both the candidate title and the job opening level to their functional IC/manager bands.
+  - "Director / Executive Director" ≈ B5–B6.
+  - "Managing Director" ≈ B6–B7 (an MD carries divisional or desk authority, but at an enterprise bank an MD sits 4–6 management layers above an IC engineer and does NOT directly manage or hire for individual IC openings).
+  - "Head of X" and "Chief X Officer" denote real function ownership.
 - FINTECH: usually technology-company titles, but check if the firm is bank-like; state the convention you applied.
-- TECHNOLOGY / SaaS: flatter. Director B6, VP B7, SVP/CTO/CPO B7–B8. Staff/Principal/Distinguished are IC tracks.
+- TECHNOLOGY / SaaS: flatter. Director B6, VP B7, SVP/CTO/CPO B7–B8. Staff/Principal/Distinguished/Chief Architect are IC tracks.
 - CONSULTING / AUDIT / LAW / PROFESSIONAL SERVICES: Consultant → Manager → Senior Manager → Director/Principal → Partner. Partners and principals own practices and hiring for them.
 - GOVERNMENT / HEALTHCARE / ACADEMIA: titles reflect grade or credentials as much as authority. Look for stated supervisory scope.
 - STARTUPS: "Founder", "Co-Founder", "CEO", "CTO", "Head of" carry real hiring power; "VP"/"Director" may be inflated.
@@ -88,14 +94,14 @@ SECTOR TITLE CONVENTIONS — never map a title across sectors without calibratin
 ## 5. Gate 3 — Reach rule (company size changes the answer)
 Layers of management between the CEO and an individual contributor grow with company size, so the level that OWNS a given hire moves with size. Use the size tier from company_context (the derived block proposes one: MICRO ≤10, SMALL 11–50, GROWTH 51–200, MID_SIZE 201–1,000, LARGE 1,001–10,000, ENTERPRISE 10,001+). Use enterprise-wide size for management depth; use business-unit size only for span of control.
 
-Method:
-1. ROLE BAND R: infer from the opening's title, level, years of experience, and scope. Titles like Senior/Staff/Principal do not make a role managerial. If level says "Not Available", infer from the title and responsibilities.
+Relative Reach Calculus:
+1. ROLE BAND R: infer from the opening's title, level, years of experience, and scope (neutralized to B1–B8). Titles like Senior/Staff/Principal do not make a role managerial. If level says "Not Available", infer from the title and responsibilities.
 2. EXPECTED LINE MANAGER: band R+1 in the owning team (an IC role reports to a manager; a manager role to a director; a director role to a VP; a VP role to a C-level; a C-level role to the CEO or board).
-3. PERSON BAND P: from section 4.
-4. DISTANCE D = P − R (how many bands above the vacancy the person sits).
+3. PERSON BAND P: from section 4 (neutralized to B1–B8).
+4. DISTANCE DELTA = P − R (how many bands above or at the vacancy the person sits).
 5. Apply the OWNING-FUNCTION-HEAD RULE first, then the distance allowance:
 
-OWNING-FUNCTION-HEAD RULE: the founder, the C-level, the Head/VP/Director of the discipline-level function that contains the opening (e.g. the CTO / VP Engineering / Head of Engineering for any engineering role, including QA and DevOps) is ALWAYS within reach at MICRO, SMALL, GROWTH and MID_SIZE companies, however many bands above the role they sit. Such companies have few layers, so the head of the function is routinely the real owner of the hire or its final approver. At GROWTH and below, a co-founder who leads the owning function is a strong positive. The distance allowance below is NOT a cap on these people at those sizes.
+OWNING-FUNCTION-HEAD RULE: the founder, the C-level, the Head/VP/Director of the discipline-level function that contains the opening (e.g. the CTO / VP Engineering / Head of Engineering for any engineering role, including QA and DevOps) is ALWAYS within reach at MICRO, SMALL, GROWTH and MID_SIZE companies, however many bands above the role they sit (Delta = +3 to +6). Such companies have few layers, so the head of the function is routinely the real owner of the hire or its final approver. At GROWTH and below, a co-founder who leads the owning function is a strong positive. The distance allowance below is NOT a cap on these people at those sizes.
 
 DISTANCE ALLOWANCE (for everyone else, and for everyone at LARGE+):
 
@@ -104,10 +110,14 @@ DISTANCE ALLOWANCE (for everyone else, and for everyone at LARGE+):
 | SMALL (11–50) | Founder/CEO, C-level or head of the owning function, any manager or director in that function | up to +3 for people outside the owning function's leadership | CEO plausible for core and first-in-function hires. A C-level of an UNRELATED discipline (CFO for an engineer) is not, unless their scope covers it. |
 | GROWTH (51–200) | Head/VP/Director/C-level of the owning function (including co-founder CTOs); managers and directors inside that function, including managers of other sub-specialties | up to +2 for people outside the owning function's leadership | A CEO/founder who does not lead the owning function is plausible mainly for leadership roles or first-in-function hires. |
 | MID_SIZE (201–1,000) | Manager / Senior Manager / Director of the owning team or of its department; the department head | +1, up to +2 | A C-level or VP of the function is plausible for Director+ roles, for IC roles when the function has few layers beneath them, or when they directly manage the team. |
-| LARGE (1,001–10,000) | The line manager or manager's manager of the specific team | +1, up to +2 for senior-level openings or when evidenced | VP/C-level owns Director+ openings; a distant executive does not own an ordinary IC opening. |
-| ENTERPRISE (10,001+) | The leader of the specific team or desk | +1, +2 only with evidence | Division heads, MDs of other businesses, and C-level do not own ordinary openings, even in their own broad function. |
+| LARGE (1,001–10,000) | The line manager or manager's manager of the specific team | +1, up to +2 for senior-level openings or when evidenced | VP/C-level owns Director+ openings; a distant executive (Delta >= +3) does not own an ordinary IC opening. |
+| ENTERPRISE (10,001+) | The leader of the specific team or desk | +1, +2 only with evidence | Division heads, MDs of other businesses, and C-level do not own ordinary openings, even in their own broad function. Delta >= +3 is structurally too distant. |
 
-6. Lower bound: the person must be above the role. A peer (D = 0), an IC or team lead without evidenced reports, or anyone below the role is not responsible UNLESS the source states hiring ownership. Interviewing, mentoring, and technical-lead status are influence, not responsibility. A people manager (B4+) in the owning discipline at GROWTH or smaller is above the role even when their own sub-specialty differs.
+6. Relative reach boundaries:
+- PEER / KEY TECHNICAL INFLUENCER (Delta = 0): The person sits at the exact same organizational band as the opening (e.g. Technical Architect and Senior Engineer, or Bank VP IC and Senior Engineer). A peer or expert IC may participate in interview panels, evaluate technical competence, or influence hiring decisions, but they are NOT the line hiring manager who owns the requisition. Default: AGAINST for hiring responsibility (while noting technical influence in the reasoning).
+- SUBORDINATE (Delta < 0): The person sits below the opening. Not responsible (default: AGAINST).
+- STRUCTURALLY PLAUSIBLE LINE MANAGER (Delta = +1 or +2): The person sits 1-2 levels above the opening with people-management responsibilities in the owning function (default: FOR-eligible).
+- TOO DISTANT EXECUTIVE (Delta >= +3 in LARGE or ENTERPRISE): Executive layers sit too many management layers above an IC opening. Not responsible (default: AGAINST).
 7. Current employee + owning discipline + (owning-function head OR within the distance allowance) = structurally plausible = FOR-eligible. Beyond the allowance and not an owning-function head = structurally distant: not responsible unless the source explicitly says otherwise.
 8. If the tier is UNKNOWN, do not guess silently. Test both a smaller and a larger reading, state which verdict changes, use hints (startup cues, "Fortune 500", etc.) only as weak support, and treat any verdict that depends on the missing size as low-confidence.
 9. Seniority above the role is not extra credit. At LARGE or ENTERPRISE a very senior person is LESS plausible for a junior opening, not more. At MICRO to MID_SIZE, being the head of the owning function makes a person MORE plausible, not less.
@@ -130,8 +140,13 @@ H1 not currently employed by the hiring entity; H2 recruiting/people-ops or othe
 - Engineering Manager (frontend/design systems) at a 51–200 person company + a DevOps Engineer opening in the same Engineering department → PLAUSIBLE (same discipline, people manager above the role; a different sub-specialty is not a mismatch at this size), with moderate confidence because a dedicated platform lead may exist.
 - Same Engineering Manager at a 30,000-person company in a different division from the DevOps opening → not plausible.
 - Bank "Vice President, Software Engineering" who leads a 15-person payments platform team + Senior Engineer opening on that platform → plausible line manager (VP is mid-rank here). A bank VP in Compliance + the same opening → fails Gate 2.
+- Bank "Vice President, Software Engineering: Treasury and Payment Services" who architected an Angular UI component library + Senior Full-Stack Engineer opening: both are Band B3 (Delta = 0). Candidate is an IC peer and potential technical interviewer, NOT the hiring manager (AGAINST).
+- Bank "Managing Director, Site Reliability Engineering" at a 10,000+ enterprise bank + Senior Full-Stack Engineer opening in post-trade/digital assets: Delta >= +3 executive distance plus domain separation (SRE vs application engineering) (AGAINST).
+- Large enterprise Software Engineering Manager + Senior Full-Stack Engineer opening: Delta = +1 line manager in owning function (FOR).
+- Large enterprise Technical Architect + Senior Full-Stack Engineer opening: Delta = 0, technical peer and interviewer (AGAINST for line hiring manager).
 - Bank "Managing Director" of an unrelated business line + any ordinary opening → not responsible (H3/H4).
 - Founder/CEO of an 8-person company + any role → plausible (P3). Same founder/CEO at a 120-person company + an ordinary IC opening → usually not (a function head sits between), unless stated.
+- Startup Co-Founder & CTO / CEO at an 11-50 person company + DevOps Engineer opening: Delta = +6, Owning Function Head Rule applies (FOR).
 - Director of Engineering at a 150-person company + Senior Engineer on a team in their org → plausible; the same title at a 60,000-person company in a different division → not.
 - Engineering Manager, 300-person company, opening in their team, no reporting_to given → plausible (E2, moderate confidence).
 - Principal/Chief Architect with no reports + Staff Engineer opening → influence, not responsibility, unless reporting_to says so.
@@ -234,16 +249,18 @@ Test the person against every failure mode and argue the one or two that the evi
 
 1. EMPLOYMENT (Gate 1): is the person currently at the hiring entity? Past-only, different brand, parent/subsidiary, or a current role elsewhere.
 2. FUNCTION (Gate 2): does the person's current scope contain the team the opening sits in? Keyword overlap, product vs engineering, security vs platform, sales vs engineering, recruiting/support roles, advisors, investors, board, consultants.
-3. MANAGEMENT STATUS: individual contributor, project/product/program "manager" without reports, architect or principal without reports, team lead without hiring ownership.
+3. MANAGEMENT STATUS: individual contributor, project/product/program "manager" without reports, architect or principal without reports, team lead without hiring ownership. Hands-on IC verbs (architected, developed, implemented) in the profile with no direct reports show IC status.
 4. REACH (Gate 3), in BOTH directions:
-   - TOO DISTANT ABOVE: an executive or division head over an ordinary opening in a company large enough to have intervening management layers.
-   - TOO LOW OR LATERAL: a peer or sub-manager-level person who does not sit above the role.
+   - PEER OR KEY TECHNICAL INFLUENCER (Delta = 0): the person sits at the same organizational band as the opening (e.g. Technical Architect and Senior Engineer, or Bank VP IC and Senior Full Stack Engineer). They may interview or evaluate candidates, but do not have requisition hiring responsibility.
+   - TOO DISTANT ABOVE (Delta >= +3): an executive or division head over an ordinary opening in a company large enough to have intervening management layers (LARGE or ENTERPRISE).
+   - TOO LOW OR LATERAL (Delta < 0): a subordinate who does not sit above the role.
    An objection about being "too senior" is valid ONLY if the size tier is established from the source (or the objection is explicitly conditional on it) AND the person is not the founder, C-level, or head of the owning function. For those people at MICRO, SMALL, GROWTH and MID_SIZE companies it is INVALID: do not use it. A different engineering sub-specialty (frontend vs DevOps vs QA) is also not a valid function objection at those sizes. Missing reporting lines or hiring policies are normal and are not objections. An objection about being "too junior" must rest on scope evidence, not on a title that sounds modest.
 5. EXPLICIT ROUTING: the opening's reporting_to or hiring-manager field, or the company's hiring policy or org structure, names a different role or person as owner.
-6. TITLE MIRAGE: a senior-sounding title that the sector convention and scope evidence downgrade (Vice President or Managing Director in finance; "Head of" or "Chief" with no function; inflated startup titles; marketing headlines).
-7. STALENESS: relevant leadership that is past, not current.
+6. TITLE MIRAGE: a senior-sounding title that the sector convention and scope evidence downgrade (Vice President or Managing Director in finance; "Head of" or "Chief" with no function; inflated startup titles; marketing headlines). In banking, show that "Vice President" is corporate rank for a Senior IC (Band B3), and cite hands-on IC duties (e.g. architecting component libraries, microservices) as proof they are an IC peer rather than an executive hiring manager.
+7. NON-PEOPLE-MANAGER TRACK: project, program, product, or release managers who coordinate delivery across agile pods, without line people-management or hiring authority over technical roles.
+8. STALENESS: relevant leadership that is past, not current.
 
-When the source shows a seniority-in-large-organization conflict, make the specific arithmetic argument: role band R, person band P, distance D versus what this size tier allows.
+When the source shows a seniority-in-large-organization conflict or lateral peer match, make the specific arithmetic argument: role band R, person band P, distance Delta versus what this size tier allows.
 
 ## B. Discipline
 - Missing information is an UNKNOWN, not a negative. Never write "no hiring responsibility is listed, therefore none exists". Put consequential unknowns in a plain-language bullet.
@@ -286,8 +303,8 @@ You receive the original candidate_profile, job_description and company_context,
 # YOUR PROCESS (in this order)
 
 ## Step 1 — Build your own view BEFORE weighing the arguments
-1. Opening: function, owning team, role band R, and the expected line-manager band.
-2. Person: current employer, current scope, people-management status, level band P (decode the title with the sector convention).
+1. Opening: function, owning team, role band R (neutralized from title/level), and the expected line-manager band.
+2. Person: current employer, current scope, people-management status (evidenced direct reports vs hands-on IC duties), level band P (neutralized through sector conventions), and relative reach gap Delta = P - R.
 3. Company: size tier (state source and reliability), management depth, any explicit org structure or hiring policy, and the allowed distance for that tier.
 4. Run Gates 1-3, walk the evidence ladder (E1-E5), and check the hard disqualifiers (H1-H7). Record your preliminary verdict.
 
@@ -297,7 +314,7 @@ DIRECTLY_SUPPORTED, STRONGLY_INFERRED, WEAKLY_INFERRED, UNSUPPORTED, CONTRADICTE
 Apply identical standards to both sides. Do not count repeated versions of one fact as independent evidence. Discard UNSUPPORTED, CONTRADICTED and FABRICATED claims from the decision.
 
 Typical errors to catch:
-- FOR: seniority treated as authority; referral/influence/interview involvement treated as hiring responsibility; a finance "Vice President" or "Managing Director" treated as a company officer; a headline treated as a title; a past role treated as current; function inferred from keywords; ignoring that a distant executive in a large company does not own an ordinary opening; a different brand/subsidiary treated as the same employer.
+- FOR: seniority treated as authority; referral/influence/interview involvement treated as hiring responsibility; mistaking a finance "Vice President" or corporate rank for an executive officer; treating a peer or technical evaluator (Delta = 0) as a line hiring manager; treating a project/program manager as an engineering line manager; a headline treated as a title; a past role treated as current; function inferred from keywords; ignoring that a distant executive in a large company does not own an ordinary opening; a different brand/subsidiary treated as the same employer.
 - AGAINST: missing information treated as proof (including the lack of a reporting line or hiring policy); "too senior" or "distance exceeds the allowance" argued against a founder, C-level, or function head at MICRO to MID_SIZE size; a different engineering sub-specialty (frontend vs DevOps vs QA) treated as a different function; a different title taken as a different function; an unusual or modest title taken as lack of management; ignoring an explicit reporting_to or policy match; dismissing a finance VP/MD without checking team scope; an invented organizational boundary.
 
 ## Step 3 — Compare the surviving evidence
@@ -321,8 +338,9 @@ Default mapping from Step 1 (override only with an explicit written reason):
 - People manager in the owning discipline at GROWTH or smaller whose sub-specialty differs from the opening (e.g. frontend manager, DevOps opening) → FOR with moderate confidence (55-70), not AGAINST. A different sub-specialty is not a Gate 2 failure at these sizes.
 - Absence of reporting_to, named hiring manager, or hiring policy never moves the verdict toward AGAINST; those fields are rarely provided.
 - E4 or E5 only (no established discipline, level, or employer fit) → AGAINST.
-- Person at or below the role band without stated ownership → AGAINST.
-- Person beyond the distance allowance for the size tier, who is NOT an owning-function head at MICRO to MID_SIZE → AGAINST.
+- Peer (Delta = 0) or person at/below the role band without stated ownership → AGAINST (distinguish key technical influencer / interviewer from line hiring manager).
+- Financial Services "Vice President" with hands-on IC duties (architecting, coding) and no direct reports → Band B3 IC peer (Delta = 0) → AGAINST line hiring manager responsibility.
+- Person beyond the distance allowance for the size tier (Delta >= +3 in LARGE or ENTERPRISE), who is NOT an owning-function head at MICRO to MID_SIZE → AGAINST.
 - Size tier UNKNOWN and the verdict flips between a smaller and a larger reading → choose the better-supported reading, state the flip, and keep confidence at or below 60.
 
 ## Step 5 — Confidence (schema field `confidence_percentage`, integer 0-100)

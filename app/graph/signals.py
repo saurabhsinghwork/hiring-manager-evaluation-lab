@@ -115,6 +115,57 @@ _COMPANY_AUTHORITY_KEY = re.compile(
     re.IGNORECASE,
 )
 
+# --------------------------------------------------------------------------- #
+# Canonical Level Bands and Title Neutralization Heuristics
+# --------------------------------------------------------------------------- #
+BAND_CANONICAL: Dict[str, int] = {
+    "B1_ENTRY_IC": 1,
+    "B2_MID_IC": 2,
+    "B3_SENIOR_IC": 3,
+    "B4_FIRST_LINE_MGR_OR_LEAD": 4,
+    "B5_SR_MANAGER": 5,
+    "B6_DIRECTOR_HEAD": 6,
+    "B7_VP_DIV_HEAD": 7,
+    "B8_C_LEVEL_FOUNDER": 8,
+}
+BAND_NAMES: Dict[int, str] = {v: k for k, v in BAND_CANONICAL.items()}
+
+# Corporate rank regexes for Financial Services
+_FS_MD = re.compile(r"\b(managing director|md)\b", re.IGNORECASE)
+_FS_ED = re.compile(r"\b(executive director|ed)\b", re.IGNORECASE)
+_FS_SVP = re.compile(r"\b(senior vice[\s-]president|svp|evp)\b", re.IGNORECASE)
+_FS_AVP = re.compile(r"\b(assistant vice[\s-]president|avp)\b", re.IGNORECASE)
+_FS_VP = re.compile(r"(?<!assistant\s)(?<!senior\s)(?<!executive\s)\b(vice[\s-]president|vp)\b", re.IGNORECASE)
+_FS_ASSOC = re.compile(r"\bassociate\b", re.IGNORECASE)
+_FS_ANALYST = re.compile(r"\banalyst\b", re.IGNORECASE)
+
+# Standard hierarchy regexes
+_C_LEVEL_FOUNDER = re.compile(
+    r"\b(chief\s+(?:executive|technology|information|security|financial|operating|product|revenue|data|compliance|legal)\s+officer|"
+    r"ceo|cto|cio|ciso|cfo|coo|cpo|cro|cdo|founder|co-founder|proprietor|managing partner)\b",
+    re.IGNORECASE,
+)
+_VP_GENERAL = re.compile(r"\b(vice[\s-]president|vp|svp|evp)\b", re.IGNORECASE)
+_DIRECTOR_GENERAL = re.compile(r"\b(senior\s+director|sr\.?\s+director|director|head of)\b", re.IGNORECASE)
+_SR_MANAGER = re.compile(r"\b(senior manager|sr\.?\s+manager|group manager|associate director)\b", re.IGNORECASE)
+_MANAGER_LEAD = re.compile(r"\b(engineering manager|software engineering manager|devops manager|qa manager|technical lead|tech lead|team lead|manager|mgr|supervisor)\b", re.IGNORECASE)
+_NON_PEOPLE_MANAGER = re.compile(r"\b(project|program|programme|product|account|delivery|release|portfolio|customer success|relationship)\s+manager\b", re.IGNORECASE)
+_SENIOR_IC_TRACK = re.compile(r"\b(principal|staff|distinguished|fellow|chief\s+architect|lead\s+architect|architect|senior|sr\.?)\b", re.IGNORECASE)
+_MID_IC_TRACK = re.compile(r"\b(engineer|developer|specialist|consultant|programmer|analyst|designer)\b", re.IGNORECASE)
+_ENTRY_IC_TRACK = re.compile(r"\b(junior|jr\.?|intern|trainee|entry|associate)\b", re.IGNORECASE)
+
+_HEADCOUNT_EXTRACT = re.compile(r"(\d+)\s*(?:\+\s*)?(?:direct\s+reports|reports|engineers|developers|people|staff|members|pods)", re.IGNORECASE)
+_TEAM_SIZE_EXTRACT = re.compile(r"(?:team\s+of|managed|led|supervised|directing|leading)\s*(\d+)", re.IGNORECASE)
+_MGMT_ACTION_VERBS = re.compile(
+    r"\b(lead(?:ing)?(?:\s+[a-z]+){0,3}\s+(?:organizations?|teams?|departments?|divisions?|pods)|"
+    r"manag(?:ing|ed)(?:\s+[a-z]+){0,3}\s+(?:organizations?|teams?|departments?|divisions?|pods)|"
+    r"direct reports|hiring|hired|budget|headcount|performance reviews?|supervising|people manager|"
+    r"people management|reporting to me)\b",
+    re.IGNORECASE,
+)
+_IC_ACTION_VERBS = re.compile(r"\b(architected|developed|coded|authored|engineered|implemented|designed\s+(?:ui|components|library|system|schema)|hands[- ]on|individual contributor|ic)\b", re.IGNORECASE)
+
+
 
 # --------------------------------------------------------------------------- #
 # Helpers
@@ -298,16 +349,401 @@ def derive_sector(company_context: Dict[str, Any]) -> Dict[str, Any]:
     return {"sector_hint": "UNKNOWN", "basis": "NONE", "source_path": None}
 
 
+def clean_title(title: str) -> str:
+    if not title:
+        return ""
+    return re.split(r"\s*[@\|•]\s*", title)[0].strip()
+
+
+def neutralize_title(title: str, sector: str = "UNKNOWN") -> Dict[str, Any]:
+    cleaned = clean_title(title)
+    is_fs = sector == "FINANCIAL_SERVICES"
+
+    corporate_rank = None
+    is_corp_rank = False
+    is_non_people_mgr = bool(_NON_PEOPLE_MANAGER.search(cleaned))
+    band_name = "B2_MID_IC"
+    band_num = 2
+    notes = ""
+
+    # Financial services title conventions (BNY, Citi, JPMorgan, etc.)
+    if is_fs:
+        if _FS_MD.search(cleaned):
+            corporate_rank = "Managing Director"
+            is_corp_rank = True
+            band_name = "B6_DIRECTOR_HEAD"
+            band_num = 6
+            notes = "In Financial Services, Managing Director is a senior executive / divisional officer rank."
+        elif _FS_ED.search(cleaned):
+            corporate_rank = "Executive Director"
+            is_corp_rank = True
+            band_name = "B5_SR_MANAGER"
+            band_num = 5
+            notes = "In Financial Services, Executive Director sits between VP and MD (Director/Senior Manager equivalent)."
+        elif _FS_SVP.search(cleaned):
+            corporate_rank = "Senior Vice President"
+            is_corp_rank = True
+            band_name = "B4_FIRST_LINE_MGR_OR_LEAD"
+            band_num = 4
+            notes = "In Financial Services, SVP is an upper-mid corporate rank above VP."
+        elif _FS_AVP.search(cleaned):
+            corporate_rank = "Assistant Vice President"
+            is_corp_rank = True
+            band_name = "B2_MID_IC"
+            band_num = 2
+            notes = "In Financial Services, AVP is an intermediate professional grade (mid-level IC)."
+        elif _FS_VP.search(cleaned):
+            corporate_rank = "Vice President"
+            is_corp_rank = True
+            has_mgr = bool(_MANAGER_LEAD.search(cleaned) and not is_non_people_mgr)
+            has_head = bool(re.search(r"\bhead of\b", cleaned, re.IGNORECASE))
+            if has_mgr or has_head:
+                band_name = "B4_FIRST_LINE_MGR_OR_LEAD"
+                band_num = 4
+                notes = "In Financial Services, Vice President is a corporate rank; explicit manager/head qualification indicates team lead / line manager (B4)."
+            else:
+                band_name = "B3_SENIOR_IC"
+                band_num = 3
+                notes = "In Financial Services, 'Vice President' is a mid-career corporate compensation rank held by senior ICs, architects, and tech leads; it does NOT denote executive hiring authority."
+        elif _C_LEVEL_FOUNDER.search(cleaned):
+            band_name = "B8_C_LEVEL_FOUNDER"
+            band_num = 8
+            notes = "Executive leadership / Founder."
+        elif _DIRECTOR_GENERAL.search(cleaned):
+            corporate_rank = "Director"
+            is_corp_rank = True
+            band_name = "B5_SR_MANAGER"
+            band_num = 5
+            notes = "Director rank in financial services."
+        elif _SR_MANAGER.search(cleaned):
+            band_name = "B5_SR_MANAGER"
+            band_num = 5
+        elif _MANAGER_LEAD.search(cleaned) and not is_non_people_mgr:
+            band_name = "B4_FIRST_LINE_MGR_OR_LEAD"
+            band_num = 4
+        elif _SENIOR_IC_TRACK.search(cleaned):
+            band_name = "B3_SENIOR_IC"
+            band_num = 3
+        elif _ENTRY_IC_TRACK.search(cleaned):
+            band_name = "B1_ENTRY_IC"
+            band_num = 1
+        else:
+            band_name = "B2_MID_IC"
+            band_num = 2
+    else:
+        # General / Tech / Startup conventions
+        if _C_LEVEL_FOUNDER.search(cleaned):
+            band_name = "B8_C_LEVEL_FOUNDER"
+            band_num = 8
+            notes = "Top executive / C-suite / Founder."
+        elif _VP_GENERAL.search(cleaned):
+            band_name = "B7_VP_DIV_HEAD"
+            band_num = 7
+            notes = "VP level executive (standard tech/commercial hierarchy)."
+        elif _DIRECTOR_GENERAL.search(cleaned):
+            band_name = "B6_DIRECTOR_HEAD"
+            band_num = 6
+            notes = "Director / Head of function."
+        elif _SR_MANAGER.search(cleaned):
+            band_name = "B5_SR_MANAGER"
+            band_num = 5
+            notes = "Senior manager / group manager."
+        elif _MANAGER_LEAD.search(cleaned):
+            if is_non_people_mgr:
+                band_name = "B3_SENIOR_IC"
+                band_num = 3
+                notes = "Project/Product/Program manager: typically individual contributor / non-people-manager track."
+            else:
+                band_name = "B4_FIRST_LINE_MGR_OR_LEAD"
+                band_num = 4
+                notes = "First-line people manager or tech lead with team oversight."
+        elif _SENIOR_IC_TRACK.search(cleaned):
+            band_name = "B3_SENIOR_IC"
+            band_num = 3
+            notes = "Senior / Staff / Principal / Architect IC track."
+        elif _ENTRY_IC_TRACK.search(cleaned):
+            band_name = "B1_ENTRY_IC"
+            band_num = 1
+            notes = "Entry / Junior IC track."
+        elif _MID_IC_TRACK.search(cleaned):
+            band_name = "B2_MID_IC"
+            band_num = 2
+            notes = "Mid-level IC engineer / specialist."
+        else:
+            band_name = "B2_MID_IC"
+            band_num = 2
+            notes = "Default mid IC band."
+
+    return {
+        "raw_title": title,
+        "cleaned_title": cleaned,
+        "canonical_band": band_name,
+        "band_number": band_num,
+        "corporate_rank": corporate_rank,
+        "is_corporate_rank_grade": is_corp_rank,
+        "is_non_people_manager_track": is_non_people_mgr,
+        "notes": notes,
+    }
+
+
+def neutralize_job_level(job_description: Dict[str, Any], sector: str = "UNKNOWN") -> Dict[str, Any]:
+    raw_level = str(job_description.get("level") or "").strip()
+    raw_title = str(job_description.get("job_title") or "").strip()
+
+    band_name = "B2_MID_IC"
+    band_num = 2
+    basis = "DEFAULT"
+
+    if re.search(r"\b(director|head\s+of)\b", raw_title, re.I):
+        band_name = "B6_DIRECTOR_HEAD"
+        band_num = 6
+        basis = "TITLE_DIRECTOR"
+    elif re.search(r"\b(engineering\s+manager|manager)\b", raw_title, re.I) and not _NON_PEOPLE_MANAGER.search(raw_title):
+        band_name = "B4_FIRST_LINE_MGR_OR_LEAD"
+        band_num = 4
+        basis = "TITLE_MANAGER"
+    elif re.search(r"\b(senior|sr\.?|staff|principal|lead|architect)\b", raw_title, re.I) or re.search(r"\b(senior|sr\.?|staff|principal|architect)\b", raw_level, re.I):
+        band_name = "B3_SENIOR_IC"
+        band_num = 3
+        basis = "TITLE_OR_LEVEL_SENIOR"
+    elif re.search(r"\b(junior|jr\.?|entry|intern|associate)\b", raw_title, re.I) or re.search(r"\b(junior|entry|intern)\b", raw_level, re.I):
+        band_name = "B1_ENTRY_IC"
+        band_num = 1
+        basis = "TITLE_OR_LEVEL_JUNIOR"
+    elif re.search(r"\b(mid|intermediate|experienced)\b", raw_level, re.I):
+        band_name = "B2_MID_IC"
+        band_num = 2
+        basis = "LEVEL_MID"
+    else:
+        band_name = "B2_MID_IC"
+        band_num = 2
+        basis = "STANDARD_IC_ROLE"
+
+    return {
+        "job_title": raw_title,
+        "stated_level": raw_level if raw_level else "Not Available",
+        "canonical_band": band_name,
+        "band_number": band_num,
+        "basis": basis,
+    }
+
+
+def derive_title_neutralization(
+    candidate_profile: Dict[str, Any],
+    job_description: Dict[str, Any],
+    sector: str = "UNKNOWN",
+) -> Dict[str, Any]:
+    primary_title = candidate_profile.get("current_title", "")
+    experiences = candidate_profile.get("experiences")
+    if isinstance(experiences, list) and len(experiences) > 0 and isinstance(experiences[0], dict):
+        exp_title = experiences[0].get("title")
+        if exp_title and not _is_missing(exp_title):
+            primary_title = exp_title
+
+    cand_canonical = neutralize_title(str(primary_title or ""), sector)
+    job_canonical = neutralize_job_level(job_description, sector)
+
+    return {
+        "candidate_canonical": cand_canonical,
+        "job_canonical": job_canonical,
+        "notes": (
+            "Titles are mapped to standardized organizational bands (B1 to B8). "
+            "In Financial Services, corporate ranks (e.g. Vice President) are normalized to functional IC/manager bands."
+        ),
+    }
+
+
+def extract_management_evidence(candidate_profile: Dict[str, Any]) -> Dict[str, Any]:
+    experiences = candidate_profile.get("experiences", [])
+    summary = str(candidate_profile.get("summary") or "")
+
+    mgmt_text = " ".join([
+        summary,
+        str(candidate_profile.get("current_title") or ""),
+    ])
+    if isinstance(experiences, list):
+        for exp in experiences[:5]:
+            if isinstance(exp, dict):
+                mgmt_text += " " + str(exp.get("description") or "") + " " + str(exp.get("title") or "")
+
+    counts: List[int] = []
+    for m in _HEADCOUNT_EXTRACT.finditer(mgmt_text):
+        try:
+            counts.append(int(m.group(1)))
+        except ValueError:
+            pass
+    for m in _TEAM_SIZE_EXTRACT.finditer(mgmt_text):
+        try:
+            counts.append(int(m.group(1)))
+        except ValueError:
+            pass
+
+    mgmt_cues = list(set(c.lower() for c in _MGMT_ACTION_VERBS.findall(mgmt_text)))
+    ic_cues = list(set(c.lower() for c in _IC_ACTION_VERBS.findall(mgmt_text)))
+
+    max_headcount = max(counts) if counts else None
+
+    if max_headcount is not None and max_headcount > 0:
+        status = "PEOPLE_MANAGER"
+        notes = f"Evidenced direct oversight of {max_headcount}+ team members."
+    elif len(mgmt_cues) >= 1 and len(ic_cues) == 0:
+        status = "PEOPLE_MANAGER"
+        notes = f"People management vocabulary evidenced ({', '.join(mgmt_cues)}) without individual contributor tasks."
+    elif len(mgmt_cues) >= 1 and len(ic_cues) >= 1:
+        status = "PLAYER_COACH"
+        notes = "Evidences both hands-on technical execution and team leading / management activities."
+    elif len(ic_cues) >= 1 and len(mgmt_cues) == 0 and not counts:
+        status = "INDIVIDUAL_CONTRIBUTOR"
+        notes = f"Description consists of hands-on technical execution ({', '.join(ic_cues)}) with no evidenced reports."
+    else:
+        status = "INDIVIDUAL_CONTRIBUTOR" if len(ic_cues) > 0 else "UNKNOWN"
+        notes = "No explicit people-management or direct reports evidenced in profile text."
+
+    return {
+        "management_status_hint": status,
+        "evidenced_team_size": max_headcount,
+        "management_cues": mgmt_cues,
+        "individual_contributor_cues": ic_cues,
+        "notes": notes,
+    }
+
+
+def calculate_relative_reach(
+    person_band: int,
+    job_band: int,
+    size_tier: str,
+    sector: str = "UNKNOWN",
+    is_owning_function_head: bool = False,
+    management_status: str = "UNKNOWN",
+    is_non_people_manager_track: bool = False,
+) -> Dict[str, Any]:
+    delta = person_band - job_band
+
+    if delta < 0:
+        return {
+            "delta": delta,
+            "classification": "SUBORDINATE",
+            "is_structurally_plausible_hiring_manager": False,
+            "hiring_manager_recommendation": "AGAINST",
+            "notes": f"Candidate band (B{person_band}) sits below the job opening band (B{job_band}); Delta = {delta}. Subordinates do not hire superiors.",
+        }
+
+    if delta == 0:
+        return {
+            "delta": 0,
+            "classification": "PEER_OR_KEY_TECHNICAL_INFLUENCER",
+            "is_structurally_plausible_hiring_manager": False,
+            "hiring_manager_recommendation": "AGAINST_LINE_HM_PLAUSIBLE_INTERVIEWER",
+            "notes": f"Candidate sits at the exact same organizational band (B{person_band}) as the opening (Delta = 0). Plausible technical evaluator, interviewer, or peer influencer, but NOT the primary line hiring manager who owns the requisition.",
+        }
+
+    if is_non_people_manager_track and not is_owning_function_head:
+        return {
+            "delta": delta,
+            "classification": "NON_PEOPLE_MANAGER_TRACK",
+            "is_structurally_plausible_hiring_manager": False,
+            "hiring_manager_recommendation": "AGAINST_LINE_HM_PLAUSIBLE_INFLUENCER",
+            "notes": "Candidate title represents a project, program, or product manager track. These roles coordinate initiatives but do not have line hiring authority over technical roles.",
+        }
+
+    # delta > 0
+    if size_tier in ("MICRO", "SMALL", "GROWTH") and (is_owning_function_head or person_band == 8 or delta <= 5):
+        return {
+            "delta": delta,
+            "classification": "STARTUP_OR_GROWTH_FUNCTION_HEAD",
+            "is_structurally_plausible_hiring_manager": True,
+            "hiring_manager_recommendation": "FOR",
+            "notes": f"In {size_tier} organizations (flat structure), founders and owning function heads (CTO/VP) directly hire and approve requisitions across the department (Delta = +{delta}).",
+        }
+
+    if size_tier in ("LARGE", "ENTERPRISE"):
+        if delta in (1, 2):
+            if management_status == "INDIVIDUAL_CONTRIBUTOR":
+                return {
+                    "delta": delta,
+                    "classification": "TECHNICAL_LEAD_OR_ARCHITECT_WITHOUT_REPORTS",
+                    "is_structurally_plausible_hiring_manager": False,
+                    "hiring_manager_recommendation": "AGAINST_LINE_HM_PLAUSIBLE_INFLUENCER",
+                    "notes": f"Band is Delta = +{delta}, but evidence indicates an individual contributor/architect without direct reports. Has technical influence but not requisition hiring authority.",
+                }
+            return {
+                "delta": delta,
+                "classification": "STRUCTURALLY_PLAUSIBLE_LINE_MANAGER",
+                "is_structurally_plausible_hiring_manager": True,
+                "hiring_manager_recommendation": "FOR",
+                "notes": f"In {size_tier} organizations, first-line or skip-level managers (Delta = +{delta}) directly own and hire for team openings.",
+            }
+        else:  # delta >= 3
+            return {
+                "delta": delta,
+                "classification": "TOO_DISTANT_EXECUTIVE",
+                "is_structurally_plausible_hiring_manager": False,
+                "hiring_manager_recommendation": "AGAINST",
+                "notes": f"In {size_tier} organizations (1,001+ employees), executive layers (Delta = +{delta}) sit too many management layers above an IC opening to serve as the direct hiring manager.",
+            }
+
+    if size_tier == "MID_SIZE":
+        if delta in (1, 2):
+            return {
+                "delta": delta,
+                "classification": "STRUCTURALLY_PLAUSIBLE_LINE_MANAGER",
+                "is_structurally_plausible_hiring_manager": True,
+                "hiring_manager_recommendation": "FOR",
+                "notes": f"In MID_SIZE organizations, line managers or department heads (Delta = +{delta}) own team requisitions.",
+            }
+        elif delta == 3 and is_owning_function_head:
+            return {
+                "delta": delta,
+                "classification": "STRUCTURALLY_PLAUSIBLE_LINE_MANAGER",
+                "is_structurally_plausible_hiring_manager": True,
+                "hiring_manager_recommendation": "FOR",
+                "notes": f"In MID_SIZE organizations, the department head (Delta = +{delta}) is within plausible reach.",
+            }
+        else:
+            return {
+                "delta": delta,
+                "classification": "TOO_DISTANT_EXECUTIVE",
+                "is_structurally_plausible_hiring_manager": False,
+                "hiring_manager_recommendation": "AGAINST",
+                "notes": f"In MID_SIZE organizations, executives at Delta = +{delta} sit above the requisition owner.",
+            }
+
+    # Default / Unknown
+    if delta in (1, 2):
+        return {
+            "delta": delta,
+            "classification": "STRUCTURALLY_PLAUSIBLE_LINE_MANAGER",
+            "is_structurally_plausible_hiring_manager": True,
+            "hiring_manager_recommendation": "FOR",
+            "notes": f"Delta = +{delta} is structurally plausible for a line manager.",
+        }
+    return {
+        "delta": delta,
+        "classification": "SIZE_DEPENDENT_REACH",
+        "is_structurally_plausible_hiring_manager": (delta <= 3),
+        "hiring_manager_recommendation": "UNRESOLVED_SIZE_DEPENDENCY",
+        "notes": f"Plausibility at Delta = +{delta} depends on company size (plausible at small companies, too distant at enterprise).",
+    }
+
+
 def _title_tokens(text: str) -> List[str]:
     return [name for name, pattern in _TITLE_TOKENS if re.search(pattern, text, re.IGNORECASE)]
 
 
-def _person_titles(candidate_profile: Dict[str, Any]) -> List[Dict[str, Any]]:
+def _person_titles(candidate_profile: Dict[str, Any], sector: str = "UNKNOWN") -> List[Dict[str, Any]]:
     found: List[Dict[str, Any]] = []
     for key in _PERSON_TITLE_KEYS:
         value = candidate_profile.get(key)
         if isinstance(value, str) and not _is_missing(value):
-            found.append({"path": f"candidate_profile.{key}", "value": value, "keyword_hints": _title_tokens(value)})
+            neut = neutralize_title(value, sector)
+            found.append({
+                "path": f"candidate_profile.{key}",
+                "value": value,
+                "keyword_hints": _title_tokens(value),
+                "neutralized_band": neut["canonical_band"],
+                "band_number": neut["band_number"],
+                "is_corporate_rank_grade": neut["is_corporate_rank_grade"],
+            })
     for key in _EXPERIENCE_KEYS:
         entries = candidate_profile.get(key)
         if isinstance(entries, list):
@@ -315,22 +751,33 @@ def _person_titles(candidate_profile: Dict[str, Any]) -> List[Dict[str, Any]]:
                 if isinstance(entry, dict):
                     title = entry.get("title") or entry.get("role") or entry.get("position")
                     if isinstance(title, str) and not _is_missing(title):
+                        neut = neutralize_title(title, sector)
                         found.append({
                             "path": f"candidate_profile.{key}[{index}].title",
                             "value": title,
                             "company": entry.get("company"),
                             "keyword_hints": _title_tokens(title),
+                            "neutralized_band": neut["canonical_band"],
+                            "band_number": neut["band_number"],
+                            "is_corporate_rank_grade": neut["is_corporate_rank_grade"],
                         })
             break
     return found
 
 
-def _job_titles(job_description: Dict[str, Any]) -> List[Dict[str, Any]]:
+def _job_titles(job_description: Dict[str, Any], sector: str = "UNKNOWN") -> List[Dict[str, Any]]:
     found: List[Dict[str, Any]] = []
     for key in _JD_TITLE_KEYS:
         value = job_description.get(key)
         if isinstance(value, str) and not _is_missing(value):
-            found.append({"path": f"job_description.{key}", "value": value, "keyword_hints": _title_tokens(value)})
+            neut = neutralize_job_level(job_description, sector)
+            found.append({
+                "path": f"job_description.{key}",
+                "value": value,
+                "keyword_hints": _title_tokens(value),
+                "neutralized_band": neut["canonical_band"],
+                "band_number": neut["band_number"],
+            })
     return found
 
 
@@ -393,15 +840,45 @@ def derive_context_signals(
     try:
         size = derive_company_size(company_context)
         size["cues"] = _size_hints(company_context)
+        sector_info = derive_sector(company_context)
+        sector_hint = sector_info.get("sector_hint", "UNKNOWN")
+        size_tier = size.get("size_tier", "UNKNOWN")
+
+        title_neutralization = derive_title_neutralization(candidate_profile, job_description, sector_hint)
+        management_evidence = extract_management_evidence(candidate_profile)
+
+        person_band_num = title_neutralization["candidate_canonical"]["band_number"]
+        job_band_num = title_neutralization["job_canonical"]["band_number"]
+        is_owning_function_head = (
+            person_band_num == 8
+            or bool(re.search(r"\b(cto|chief\s+technology\s+officer|head\s+of\s+engineering|vp\s+of\s+engineering)\b", title_neutralization["candidate_canonical"]["cleaned_title"], re.I))
+        )
+        is_non_people_mgr = title_neutralization["candidate_canonical"]["is_non_people_manager_track"]
+        mgmt_status = management_evidence["management_status_hint"]
+
+        relative_reach = calculate_relative_reach(
+            person_band=person_band_num,
+            job_band=job_band_num,
+            size_tier=size_tier,
+            sector=sector_hint,
+            is_owning_function_head=is_owning_function_head,
+            management_status=mgmt_status,
+            is_non_people_manager_track=is_non_people_mgr,
+        )
+
         return {
             "company_size": size,
-            "sector": derive_sector(company_context),
+            "sector": sector_info,
             "employer_match": _employer_match(candidate_profile, company_context),
-            "person_titles": _person_titles(candidate_profile),
-            "job_titles": _job_titles(job_description),
+            "person_titles": _person_titles(candidate_profile, sector_hint),
+            "job_titles": _job_titles(job_description, sector_hint),
+            "title_neutralization": title_neutralization,
+            "management_evidence": management_evidence,
+            "relative_reach": relative_reach,
             "explicit_authority_statements": _authoritative_statements(job_description, company_context),
             "caveat": "Automated hints. Verify against the source JSON; if the source contradicts a hint, the "
                       "source wins. keyword_hints are lexical only and never establish authority by themselves.",
         }
     except Exception as exc:  # pragma: no cover - defensive: hints must never break the workflow
         return {"error": f"signal derivation failed: {type(exc).__name__}", "caveat": "Ignore this block."}
+
